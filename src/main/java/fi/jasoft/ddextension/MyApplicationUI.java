@@ -30,7 +30,7 @@ public class MyApplicationUI extends UI{
 		VerticalLayout vl = new VerticalLayout();		
 		vl.setSizeFull();
 
-		DragAndDrop.enable(vl).drop(new VerticalLayoutDropHandler());		
+		DragAndDrop.enable(vl);	
 		
 		for(int i=0; i<5; i++){
 			if(i == 3){
@@ -45,7 +45,7 @@ public class MyApplicationUI extends UI{
 		VerticalLayout v2 = new VerticalLayout();
 		v2.setSizeFull();
 		
-		DragAndDrop.enable(v2).drop(new VerticalLayoutDropHandler());
+		DragAndDrop.enable(v2);
 		
 		vl.addComponent(v2);
 		

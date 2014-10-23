@@ -8,7 +8,7 @@ import com.vaadin.server.AbstractExtension;
  */
 @SuppressWarnings("serial")
 public class DragAndDrop<T extends AbstractClientConnector> extends AbstractExtension {
-		
+			
 	public static <T extends AbstractClientConnector> DragAndDrop<T> enable (T component) {
 		DragAndDrop<T> dragAndDrop = new DragAndDrop<T>(component);
 		dragAndDrop.extend(component);
@@ -21,6 +21,7 @@ public class DragAndDrop<T extends AbstractClientConnector> extends AbstractExte
 	
 	private DragAndDrop(T component) {
 		this.connector = component;		
+		drop(DragAndDropHandlerFactory.getDropHandler(component));
 	}
 	
 	public DragAndDrop<T> disable() {
