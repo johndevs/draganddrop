@@ -1,0 +1,21 @@
+apply from: 'http://plugins.jasoft.fi/vaadin.plugin?version=0.9-SNAPSHOT'
+apply plugin: 'eclipse-wtp'
+
+
+vaadin {
+    widgetset 'fi.jasoft.ddextension.DDExtensionWidgetset'
+    
+    gwt {
+    	manageWidgetset false
+        extraArgs '-gen', '/tmp/generated'        
+    }
+    
+    devmode {
+        superDevMode true
+    }
+
+    plugin {
+        openInBrowser false
+        logToConsole true
+    }
+}
