@@ -1,8 +1,6 @@
 package fi.jasoft.ddextension.server.draganddrop;
 
-import com.vaadin.server.AbstractClientConnector;
 import com.vaadin.shared.Connector;
-import com.vaadin.shared.communication.ServerRpc;
 import com.vaadin.ui.Component;
 
 import fi.jasoft.ddextension.client.draganddrop.DragAndDropServerRpc;

@@ -16,18 +16,22 @@ import fi.jasoft.ddextension.server.draganddrop.handlers.VerticalLayoutDropHandl
 public class VerticalLayoutDragAndDropConfiguration extends OrderedLayoutDragAndDropConfiguration<VerticalLayoutConnector> {
 
 	public interface VerticalLayoutDropHandlerRpc extends DragAndDropServerRpc {		
-		public void drop(Connector source, Connector dragged, int index, int verticalAlign);		
+		public void drop(Connector source, Connector dragged, int index, Alignment verticalAlign);		
 	}	
+	
+	public enum Alignment {
+		TOP, MIDDLE, BOTTOM
+	}
 		
 	@Override
 	public void dragEnter(DragEnterEvent event) {			
 		super.dragEnter(event);				
 		if(currentSlot != null){			
-			int verticalAlign = getVerticalAlign(event.getEvent());
+			Alignment verticalAlign = getVerticalAlign(event.getEvent());
 			switch(verticalAlign){
-			case 1: currentSlot.addStyleName(ACTIVE_SLOT+"-top"); break;
-			case 2: currentSlot.addStyleName(ACTIVE_SLOT+"-middle"); break;
-			case 3: currentSlot.addStyleName(ACTIVE_SLOT+"-bottom"); break;
+			case TOP: currentSlot.addStyleName(ACTIVE_SLOT+"-top"); break;
+			case MIDDLE: currentSlot.addStyleName(ACTIVE_SLOT+"-middle"); break;
+			case BOTTOM: currentSlot.addStyleName(ACTIVE_SLOT+"-bottom"); break;
 			}
 		}	
 	}
@@ -47,27 +51,26 @@ public class VerticalLayoutDragAndDropConfiguration extends OrderedLayoutDragAnd
 		super.drop(event);	
 		VerticalLayoutConnector connector = (VerticalLayoutConnector) event.getTargetConnector();
 		int slotIndex = getSlotIndex(connector, event.getEvent());
-		int verticalAlign = getVerticalAlign(event.getEvent());		
+		Alignment verticalAlign = getVerticalAlign(event.getEvent());		
 		getRpcProxy(VerticalLayoutDropHandlerRpc.class).drop(connector, event.getDraggedConnector(), slotIndex, verticalAlign);
 	}
 				
-	private int getVerticalAlign(NativeEvent event) {
+	private Alignment getVerticalAlign(NativeEvent event) {
 		Slot slot = getSlot(event);
 		if(slot == null){
 			// Over layout
-			return -1;
+			return Alignment.MIDDLE;
 		}
 		
 		int absoluteTop = slot.getAbsoluteTop();
-		int fromTop = Util.getTouchOrMouseClientY(event) - absoluteTop;
-		
+		int fromTop = Util.getTouchOrMouseClientY(event) - absoluteTop;		
 		float percentageFromTop = (fromTop / (float) slot.getOffsetHeight());		
 		if (percentageFromTop < 0.25) {
-		  return 1;
+		  return Alignment.TOP;
 		} else if (percentageFromTop > 1 - 0.25) {
-		  return 3;
+		  return Alignment.BOTTOM;
 		} else {
-		  return 2;
+		  return Alignment.MIDDLE;
 		}		
 	}
 }

@@ -5,6 +5,7 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
 
 import fi.jasoft.ddextension.client.draganddrop.DragAndDropServerRpc;
+import fi.jasoft.ddextension.client.draganddrop.configurations.HorizontalLayoutDragAndDropConfiguration.Alignment;
 import fi.jasoft.ddextension.client.draganddrop.configurations.HorizontalLayoutDragAndDropConfiguration.HorizontalLayoutDropHandlerRpc;
 import fi.jasoft.ddextension.server.draganddrop.DropHandler;
 import fi.jasoft.ddextension.server.draganddrop.DragAndDropHandler;
@@ -23,7 +24,7 @@ public class HorizontalLayoutDropHandler extends DropHandler<HorizontalLayout>{
 		}
 		
 		@Override
-		public void drop(Connector source, Connector dragged, int index, int horizontalAlign) {
+		public void drop(Connector source, Connector dragged, int index, Alignment horizontalAlign) {
 			if(source == getTargetComponent()) {
 				onDrop((Component) dragged, index, horizontalAlign); 
 			}			
@@ -35,7 +36,7 @@ public class HorizontalLayoutDropHandler extends DropHandler<HorizontalLayout>{
 		return rpc;
 	}
 	
-	protected void onDrop(Component component, int index, int verticalAlign) {	
+	protected void onDrop(Component component, int index, Alignment horizontalAlign) {	
 		if(getTargetComponent().getComponent(index) == component){
 			return;
 		}		
@@ -43,7 +44,7 @@ public class HorizontalLayoutDropHandler extends DropHandler<HorizontalLayout>{
 		getTargetComponent().removeComponent(component);
 		
 		if(index > -1){
-			if(verticalAlign == 2 || verticalAlign == 3){
+			if(horizontalAlign != Alignment.LEFT){
 				index++;
 			} 					
 			getTargetComponent().addComponent(component, index);		

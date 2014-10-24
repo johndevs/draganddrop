@@ -33,7 +33,7 @@ public class MyApplicationUI extends UI{
 		VerticalLayout vl = new VerticalLayout();		
 		vl.setSizeFull();
 
-		DragAndDrop.enable(vl).disable(DragAndDropOperations.ALL);
+		DragAndDrop.enable(vl);
 		
 		for(int i=0; i<5; i++){
 			if(i == 3){

@@ -17,18 +17,22 @@ import fi.jasoft.ddextension.server.draganddrop.handlers.HorizontalLayoutDropHan
 public class HorizontalLayoutDragAndDropConfiguration extends OrderedLayoutDragAndDropConfiguration<VerticalLayoutConnector> {
 
 	public interface HorizontalLayoutDropHandlerRpc extends DragAndDropServerRpc {		
-		public void drop(Connector source, Connector dragged, int index, int horizontalAlign);		
+		public void drop(Connector source, Connector dragged, int index, Alignment horizontalAlign);		
 	}	
+
+	public enum Alignment {
+		LEFT, CENTER, RIGHT
+	}
 		
 	@Override
 	public void dragEnter(DragEnterEvent event) {			
 		super.dragEnter(event);				
 		if(currentSlot != null){			
-			int horizontalAlign = getHorizontalAlign(event.getEvent());
+			Alignment horizontalAlign = getHorizontalAlign(event.getEvent());
 			switch(horizontalAlign){
-			case 1: currentSlot.addStyleName(ACTIVE_SLOT+"-left"); break;
-			case 2: currentSlot.addStyleName(ACTIVE_SLOT+"-center"); break;
-			case 3: currentSlot.addStyleName(ACTIVE_SLOT+"-right"); break;
+			case LEFT: currentSlot.addStyleName(ACTIVE_SLOT+"-left"); break;
+			case CENTER: currentSlot.addStyleName(ACTIVE_SLOT+"-center"); break;
+			case RIGHT: currentSlot.addStyleName(ACTIVE_SLOT+"-right"); break;
 			}
 		}	
 	}	
@@ -48,15 +52,15 @@ public class HorizontalLayoutDragAndDropConfiguration extends OrderedLayoutDragA
 		super.drop(event);
 		HorizontalLayoutConnector connector = (HorizontalLayoutConnector) event.getTargetConnector();
 		int slotIndex = getSlotIndex(connector, event.getEvent());
-		int horizontalAlign = getHorizontalAlign(event.getEvent());		
+		Alignment horizontalAlign = getHorizontalAlign(event.getEvent());		
 		getRpcProxy(HorizontalLayoutDropHandlerRpc.class).drop(connector, event.getDraggedConnector(), slotIndex, horizontalAlign);
 	}
 				
-	private int getHorizontalAlign(NativeEvent event) {
+	private Alignment getHorizontalAlign(NativeEvent event) {
 		Slot slot = getSlot(event);
 		if(slot == null){
 			// Over layout
-			return -1;
+			return Alignment.LEFT;
 		}
 		
 		int absoluteLeft = slot.getAbsoluteLeft();
@@ -64,11 +68,11 @@ public class HorizontalLayoutDragAndDropConfiguration extends OrderedLayoutDragA
 		
 		float percentageFromTop = (fromTop / (float) slot.getOffsetHeight());		
 		if (percentageFromTop < 0.25) {
-		  return 1;
+		  return Alignment.LEFT;
 		} else if (percentageFromTop > 1 - 0.25) {
-		  return 3;
+		  return Alignment.RIGHT;
 		} else {
-		  return 2;
+		  return Alignment.CENTER;
 		}		
 	}
 }
