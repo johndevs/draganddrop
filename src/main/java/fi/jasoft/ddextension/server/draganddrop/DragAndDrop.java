@@ -3,6 +3,7 @@ package fi.jasoft.ddextension.server.draganddrop;
 import com.vaadin.server.AbstractClientConnector;
 import com.vaadin.server.AbstractExtension;
 import com.vaadin.ui.Component;
+import com.vaadin.ui.HasComponents;
 
 import fi.jasoft.ddextension.shared.draganddrop.DragAndDropOperations;
 import fi.jasoft.ddextension.shared.draganddrop.DragAndDropState;
@@ -34,7 +35,18 @@ public class DragAndDrop<T extends Component> extends AbstractExtension {
 	}
 	
 	public DragAndDrop<T> enable(DragAndDropOperations operation) {	
+		getState().disabled.remove(DragAndDropOperations.ALL);
 		getState().disabled.remove(operation);
+		return this;
+	}
+	
+	public DragAndDrop<T> from(HasComponents layout) {
+		getState().fromLayout = layout;
+		return this;
+	}
+	
+	public DragAndDrop<T> from(Component component) {
+		getState().fromComponent = component;
 		return this;
 	}
 	

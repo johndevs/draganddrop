@@ -19,7 +19,11 @@ import fi.jasoft.ddextension.shared.draganddrop.DragAndDropOperations;
 public class MyApplicationUI extends UI{
 	
 	@Override
-	protected void init(VaadinRequest request){										
+	protected void init(VaadinRequest request){			
+		
+		VerticalLayout vl = new VerticalLayout();		
+		vl.setSizeFull();
+		
 		Label label = new Label("Droppable label");
 		DragAndDrop.enable(label).onDrop(new DropHandler<Label>() {
 			
@@ -27,12 +31,8 @@ public class MyApplicationUI extends UI{
 			protected void onDrop(Component component) {
 				Notification.show("Dropped "+component);				
 			}
-		});
+		}).from(vl);		
 		
-		
-		VerticalLayout vl = new VerticalLayout();		
-		vl.setSizeFull();
-
 		DragAndDrop.enable(vl);
 		
 		for(int i=0; i<5; i++){

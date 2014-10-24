@@ -173,7 +173,14 @@ public class DragAndDropConnector extends AbstractExtensionConnector {
 	}
 	
 	private boolean isDroppingDisabled() {
-		return isDragAndDropDisabled() || getState().disabled.contains(DragAndDropOperations.DROPPING);
+		boolean disabled = false;
+		if(getState().fromLayout != null) {
+			disabled |= currentDraggedComponent.getParent() != getState().fromLayout;
+		}		
+		if(getState().fromComponent != null) {
+			disabled |= currentDraggedComponent != getState().fromComponent; 
+		}
+		return disabled || isDragAndDropDisabled() || getState().disabled.contains(DragAndDropOperations.DROPPING);
 	}
 	
 	protected void onMouseDown(NativeEvent event) {					
