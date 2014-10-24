@@ -1,16 +1,19 @@
 package fi.jasoft.ddextension;
 
+import com.google.gwt.dom.client.Style.Display;
 import com.vaadin.annotations.Theme;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.ui.Component;
+import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
-import fi.jasoft.ddextension.server.draganddrop.AbstractDropHandler;
+import fi.jasoft.ddextension.server.draganddrop.DropHandler;
 import fi.jasoft.ddextension.server.draganddrop.DragAndDrop;
 import fi.jasoft.ddextension.server.draganddrop.handlers.VerticalLayoutDropHandler;
+import fi.jasoft.ddextension.shared.draganddrop.DragAndDropOperations;
 
 @Theme("MyApplication")
 public class MyApplicationUI extends UI{
@@ -18,7 +21,7 @@ public class MyApplicationUI extends UI{
 	@Override
 	protected void init(VaadinRequest request){										
 		Label label = new Label("Droppable label");
-		DragAndDrop.enable(label).drop(new AbstractDropHandler<Label>() {
+		DragAndDrop.enable(label).onDrop(new DropHandler<Label>() {
 			
 			@Override
 			protected void onDrop(Component component) {
@@ -30,7 +33,7 @@ public class MyApplicationUI extends UI{
 		VerticalLayout vl = new VerticalLayout();		
 		vl.setSizeFull();
 
-		DragAndDrop.enable(vl);	
+		DragAndDrop.enable(vl).disable(DragAndDropOperations.ALL);
 		
 		for(int i=0; i<5; i++){
 			if(i == 3){
@@ -42,12 +45,16 @@ public class MyApplicationUI extends UI{
 		
 		setContent(vl);
 		
-		VerticalLayout v2 = new VerticalLayout();
-		v2.setSizeFull();
+		HorizontalLayout hl = new HorizontalLayout();
+		hl.setSizeFull();
 		
-		DragAndDrop.enable(v2);
+		for(int i=0; i<5; i++){
+			hl.addComponent(new Label("Text label "+i));	
+		}				
 		
-		vl.addComponent(v2);
+		DragAndDrop.enable(hl);
+		
+		vl.addComponent(hl);
 		
 	}
 }

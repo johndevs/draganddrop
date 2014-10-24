@@ -2,18 +2,18 @@ package fi.jasoft.ddextension.server.draganddrop.handlers;
 
 import com.vaadin.shared.Connector;
 import com.vaadin.ui.Component;
-import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.HorizontalLayout;
 
 import fi.jasoft.ddextension.client.draganddrop.DragAndDropServerRpc;
-import fi.jasoft.ddextension.client.draganddrop.configurations.VerticalLayoutDragAndDropConfiguration.VerticalLayoutDropHandlerRpc;
+import fi.jasoft.ddextension.client.draganddrop.configurations.HorizontalLayoutDragAndDropConfiguration.HorizontalLayoutDropHandlerRpc;
 import fi.jasoft.ddextension.server.draganddrop.DropHandler;
 import fi.jasoft.ddextension.server.draganddrop.DragAndDropHandler;
 
-@DragAndDropHandler(VerticalLayout.class)
-public class VerticalLayoutDropHandler extends DropHandler<VerticalLayout>{
+@DragAndDropHandler(HorizontalLayout.class)
+public class HorizontalLayoutDropHandler extends DropHandler<HorizontalLayout>{
 		
 	@SuppressWarnings("serial")
-	private VerticalLayoutDropHandlerRpc rpc = new VerticalLayoutDropHandlerRpc() {
+	private HorizontalLayoutDropHandlerRpc rpc = new HorizontalLayoutDropHandlerRpc() {
 		
 		@Override
 		public void drop(Connector source, Connector dragged) {
@@ -23,9 +23,9 @@ public class VerticalLayoutDropHandler extends DropHandler<VerticalLayout>{
 		}
 		
 		@Override
-		public void drop(Connector source, Connector dragged, int index, int verticalAlign) {
+		public void drop(Connector source, Connector dragged, int index, int horizontalAlign) {
 			if(source == getTargetComponent()) {
-				onDrop((Component) dragged, index, verticalAlign); 
+				onDrop((Component) dragged, index, horizontalAlign); 
 			}			
 		}
 	};
@@ -38,11 +38,14 @@ public class VerticalLayoutDropHandler extends DropHandler<VerticalLayout>{
 	protected void onDrop(Component component, int index, int verticalAlign) {	
 		if(getTargetComponent().getComponent(index) == component){
 			return;
-		}						
+		}		
+		
+		getTargetComponent().removeComponent(component);
+		
 		if(index > -1){
 			if(verticalAlign == 2 || verticalAlign == 3){
 				index++;
-			} 				
+			} 					
 			getTargetComponent().addComponent(component, index);		
 		} else {
 			getTargetComponent().addComponent(component);		

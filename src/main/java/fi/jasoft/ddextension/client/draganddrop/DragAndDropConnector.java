@@ -23,6 +23,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.vaadin.client.ComponentConnector;
 import com.vaadin.client.ServerConnector;
 import com.vaadin.client.Util;
+import com.vaadin.client.annotations.OnStateChange;
 import com.vaadin.client.extensions.AbstractExtensionConnector;
 import com.vaadin.client.ui.VOverlay;
 import com.vaadin.shared.ui.Connect;
@@ -33,10 +34,13 @@ import fi.jasoft.ddextension.client.draganddrop.DragAndDropEvent.DropEvent;
 import fi.jasoft.ddextension.client.draganddrop.configurations.AbstractDragAndDropConfiguration;
 import fi.jasoft.ddextension.client.draganddrop.configurations.DefaultDragAndDropConfiguration;
 import fi.jasoft.ddextension.server.draganddrop.DragAndDrop;
+import fi.jasoft.ddextension.shared.draganddrop.DragAndDropOperations;
+import fi.jasoft.ddextension.shared.draganddrop.DragAndDropState;
 
 /**
  * Connects the server side component with the client side widget
  */
+@SuppressWarnings("serial")
 @Connect(DragAndDrop.class)
 public class DragAndDropConnector extends AbstractExtensionConnector {
 	private static ComponentConnector currentDraggedComponent;
@@ -160,7 +164,23 @@ public class DragAndDropConnector extends AbstractExtensionConnector {
 		}		
 	}
 	
-	protected void onMouseDown(NativeEvent event) {			
+	private boolean isDragAndDropDisabled() {
+		return getState().disabled.contains(DragAndDropOperations.ALL);
+	}
+	
+	private boolean isDraggingDisabled() {
+		return isDragAndDropDisabled() || getState().disabled.contains(DragAndDropOperations.DRAGGING);
+	}
+	
+	private boolean isDroppingDisabled() {
+		return isDragAndDropDisabled() || getState().disabled.contains(DragAndDropOperations.DROPPING);
+	}
+	
+	protected void onMouseDown(NativeEvent event) {					
+		if(isDraggingDisabled()){
+			return;
+		}		
+		
 		Element element = Element.as(event.getEventTarget());
 		Widget widget = Util.findWidget(element, null);
 		ComponentConnector connector = Util.findConnectorFor(widget);
@@ -236,6 +256,10 @@ public class DragAndDropConnector extends AbstractExtensionConnector {
 	}
 	
 	protected void onMouseUp(NativeEvent event) {
+		if(isDroppingDisabled()){
+			return;
+		}		
+		
 		AbstractDragAndDropConfiguration<? extends ComponentConnector> configuration = getConfiguration();
 		try {
 			if (currentDraggedComponent != null) {			
@@ -253,7 +277,11 @@ public class DragAndDropConnector extends AbstractExtensionConnector {
 		}	
 	}
 
-	protected void onMouseOver(NativeEvent event) {				
+	protected void onMouseOver(NativeEvent event) {		
+		if(isDroppingDisabled()){
+			return;
+		}		
+		
 		AbstractDragAndDropConfiguration<? extends ComponentConnector> configuration = getConfiguration();
 		if (currentDraggedComponent != null) {		
 			getLogger().info("Drag over "+targetComponent);
@@ -269,6 +297,10 @@ public class DragAndDropConnector extends AbstractExtensionConnector {
 	}
 
 	protected void onMouseOut(NativeEvent event) {
+		if(isDroppingDisabled()){
+			return;
+		}		
+		
 		AbstractDragAndDropConfiguration<? extends ComponentConnector> configuration = getConfiguration();
 		if (currentDraggedComponent != null) {			
 			DragLeaveEvent ddEvemt = new DragLeaveEvent(targetComponent,
@@ -346,5 +378,14 @@ public class DragAndDropConnector extends AbstractExtensionConnector {
 		}
 	}
 
-
+	@Override
+	public DragAndDropState getState() {
+		return (DragAndDropState) super.getState();
+	}
+	
+	@OnStateChange("disabled")
+	private void onDisabledOperationsChange() {
+		//TODO
+	}
+	
 }

@@ -8,7 +8,7 @@ import com.vaadin.ui.Component;
 import fi.jasoft.ddextension.client.draganddrop.DragAndDropServerRpc;
 
 @SuppressWarnings("serial")
-public abstract class AbstractDropHandler<T extends AbstractClientConnector>{
+public abstract class DropHandler<T extends Component>{
 
 	private T targetComponent;
 	

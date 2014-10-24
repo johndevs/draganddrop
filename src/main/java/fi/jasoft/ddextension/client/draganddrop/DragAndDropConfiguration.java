@@ -7,7 +7,7 @@ import java.lang.annotation.Target;
 
 import com.vaadin.shared.Connector;
 
-import fi.jasoft.ddextension.server.draganddrop.AbstractDropHandler;
+import fi.jasoft.ddextension.server.draganddrop.DropHandler;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)

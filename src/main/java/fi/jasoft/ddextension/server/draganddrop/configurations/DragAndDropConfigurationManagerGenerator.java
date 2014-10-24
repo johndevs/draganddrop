@@ -21,7 +21,7 @@ import com.vaadin.shared.ui.Connect;
 import fi.jasoft.ddextension.client.draganddrop.DragAndDropConfiguration;
 import fi.jasoft.ddextension.client.draganddrop.DragAndDropConfigurationManager;
 import fi.jasoft.ddextension.client.draganddrop.configurations.AbstractDragAndDropConfiguration;
-import fi.jasoft.ddextension.server.draganddrop.AbstractDropHandler;
+import fi.jasoft.ddextension.server.draganddrop.DropHandler;
 import fi.jasoft.ddextension.server.draganddrop.DragAndDropHandler;
 
 public class DragAndDropConfigurationManagerGenerator extends Generator {
