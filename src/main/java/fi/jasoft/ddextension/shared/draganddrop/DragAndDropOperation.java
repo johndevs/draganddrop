@@ -1,6 +1,6 @@
 package fi.jasoft.ddextension.shared.draganddrop;
 
-public enum DragAndDropOperations {
+public enum DragAndDropOperation {
 	/**
 	 * Disables starting drag operations from compontents
 	 */

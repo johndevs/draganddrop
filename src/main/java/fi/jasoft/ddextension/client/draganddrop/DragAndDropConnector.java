@@ -34,7 +34,7 @@ import fi.jasoft.ddextension.client.draganddrop.DragAndDropEvent.DropEvent;
 import fi.jasoft.ddextension.client.draganddrop.configurations.AbstractDragAndDropConfiguration;
 import fi.jasoft.ddextension.client.draganddrop.configurations.DefaultDragAndDropConfiguration;
 import fi.jasoft.ddextension.server.draganddrop.DragAndDrop;
-import fi.jasoft.ddextension.shared.draganddrop.DragAndDropOperations;
+import fi.jasoft.ddextension.shared.draganddrop.DragAndDropOperation;
 import fi.jasoft.ddextension.shared.draganddrop.DragAndDropState;
 
 /**
@@ -165,22 +165,32 @@ public class DragAndDropConnector extends AbstractExtensionConnector {
 	}
 	
 	private boolean isDragAndDropDisabled() {
-		return getState().disabled.contains(DragAndDropOperations.ALL);
+		return getState().disabled.contains(DragAndDropOperation.ALL);
 	}
 	
 	private boolean isDraggingDisabled() {
-		return isDragAndDropDisabled() || getState().disabled.contains(DragAndDropOperations.DRAGGING);
+		return isDragAndDropDisabled() || getState().disabled.contains(DragAndDropOperation.DRAGGING);
+	}
+	
+	private boolean isReorderingDisabled() {
+		return isDragAndDropDisabled() || getState().disabled.contains(DragAndDropOperation.REORDERING);
 	}
 	
 	private boolean isDroppingDisabled() {
-		boolean disabled = false;
+		boolean disabled = isDragAndDropDisabled() || getState().disabled.contains(DragAndDropOperation.DROPPING);
 		if(getState().fromLayout != null) {
+			// from layout
 			disabled |= currentDraggedComponent.getParent() != getState().fromLayout;
 		}		
 		if(getState().fromComponent != null) {
+			// from component
 			disabled |= currentDraggedComponent != getState().fromComponent; 
 		}
-		return disabled || isDragAndDropDisabled() || getState().disabled.contains(DragAndDropOperations.DROPPING);
+		if(isReorderingDisabled()){
+			// re-ordering
+			disabled |= getState().fromLayout == targetComponent;
+		}		
+		return disabled;
 	}
 	
 	protected void onMouseDown(NativeEvent event) {					

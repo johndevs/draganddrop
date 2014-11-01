@@ -8,7 +8,7 @@ import com.vaadin.shared.communication.SharedState;
 
 public class DragAndDropState extends SharedState{
 
-	public List<DragAndDropOperations> disabled = new ArrayList<DragAndDropOperations>();
+	public List<DragAndDropOperation> disabled = new ArrayList<DragAndDropOperation>();
 	
 	public Connector fromLayout;
 	

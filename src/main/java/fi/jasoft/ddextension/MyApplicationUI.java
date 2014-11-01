@@ -1,8 +1,8 @@
 package fi.jasoft.ddextension;
 
-import com.google.gwt.dom.client.Style.Display;
 import com.vaadin.annotations.Theme;
 import com.vaadin.server.VaadinRequest;
+import com.vaadin.ui.AbsoluteLayout;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
@@ -10,10 +10,9 @@ import com.vaadin.ui.Notification;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
-import fi.jasoft.ddextension.server.draganddrop.DropHandler;
 import fi.jasoft.ddextension.server.draganddrop.DragAndDrop;
-import fi.jasoft.ddextension.server.draganddrop.handlers.VerticalLayoutDropHandler;
-import fi.jasoft.ddextension.shared.draganddrop.DragAndDropOperations;
+import fi.jasoft.ddextension.server.draganddrop.DropHandler;
+import fi.jasoft.ddextension.shared.draganddrop.DragAndDropOperation;
 
 @Theme("MyApplication")
 public class MyApplicationUI extends UI{
@@ -31,7 +30,7 @@ public class MyApplicationUI extends UI{
 			protected void onDrop(Component component) {
 				Notification.show("Dropped "+component);				
 			}
-		}).from(vl);		
+		}).from(vl).disable(DragAndDropOperation.REORDERING);		
 		
 		DragAndDrop.enable(vl);
 		
