@@ -11,7 +11,7 @@ import com.vaadin.ui.VerticalLayout;
 
 import fi.jasoft.draganddrop.shared.DragAndDropOperation;
 
-@Theme("MyApplication")
+@Theme("Demo")
 public class DemoUI extends UI{
 	
 	@Override

@@ -1,9 +1,9 @@
 @import "addons.scss";
-@import "demo.scss";
+@import "Demo.scss";
 
 /* This file prefixes all rules with the theme name to avoid causing conflicts with other themes. */
 /* The actual styles should be defined in myapplication.scss */
-.MyApplication {
+.Demo {
   @include addons;
-  @include demo;
+  @include Demo;
 }
