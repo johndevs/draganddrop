@@ -1,21 +1,45 @@
-apply from: 'http://plugins.jasoft.fi/vaadin.plugin?version=0.9-SNAPSHOT'
-apply plugin: 'eclipse-wtp'
+allprojects {
+    version = '0.1'
+    group = 'fi.jasoft'
+}
 
+subprojects {
+    apply from: 'http://plugins.jasoft.fi/vaadin.plugin?version=0.9-SNAPSHOT'
+    //apply from: '/home/john/Repositories/gradle-vaadin-plugin/vaadin-development.plugin'    
+    apply plugin: 'eclipse-wtp'
+}
 
-vaadin {
-    widgetset 'fi.jasoft.ddextension.DDExtensionWidgetset'
+project(':addon') {
+    vaadin {
+        widgetset 'fi.jasoft.draganddrop.DragAndDropWidgetset'
+  
+        gwt {
+            manageWidgetset false        
+        }    
     
-    gwt {
-    	manageWidgetset false
-        extraArgs '-gen', '/tmp/generated'        
-    }
-    
-    devmode {
-        superDevMode true
+        addon {
+            //styles = ['VAADIN/addons/draganddrop/draganddrop.scss']
+            author 'John Ahlroos'
+            license 'Apache 2.0'
+            title 'DragAndDrop'
+        }
     }
 
-    plugin {
-        openInBrowser false
-        logToConsole true
+    jar {
+        baseName = 'draganddrop'        
+        sourceSets.main.java.srcDirs.each{
+            from it
+        }
     }
 }
+
+project(':demo') {
+    dependencies {
+        compile project(':addon')
+    }
+
+    vaadin {
+        widgetset 'fi.jasoft.draganddrop.DemoWidgetset'
+    }
+}
+
