@@ -1,4 +1,4 @@
-package fi.jasoft.draganddrop.client.draganddrop.configurations;
+package fi.jasoft.draganddrop.client.configurations;
 
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.NativeEvent;
@@ -7,9 +7,9 @@ import com.vaadin.client.Util;
 import com.vaadin.client.ui.orderedlayout.AbstractOrderedLayoutConnector;
 import com.vaadin.client.ui.orderedlayout.Slot;
 
-import fi.jasoft.draganddrop.client.draganddrop.DragAndDropEvent.DragEnterEvent;
-import fi.jasoft.draganddrop.client.draganddrop.DragAndDropEvent.DragLeaveEvent;
-import fi.jasoft.draganddrop.client.draganddrop.DragAndDropEvent.DropEvent;
+import fi.jasoft.draganddrop.client.DragAndDropEvent.DragEnterEvent;
+import fi.jasoft.draganddrop.client.DragAndDropEvent.DragLeaveEvent;
+import fi.jasoft.draganddrop.client.DragAndDropEvent.DropEvent;
 
 public class OrderedLayoutDragAndDropConfiguration<T extends AbstractOrderedLayoutConnector> extends
 		AbstractDragAndDropConfiguration<T> {

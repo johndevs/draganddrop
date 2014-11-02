@@ -1,4 +1,4 @@
-package fi.jasoft.draganddrop.shared.draganddrop;
+package fi.jasoft.draganddrop.shared;
 
 public enum DragAndDropOperation {
 	/**

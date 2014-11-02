@@ -1,4 +1,4 @@
-package fi.jasoft.draganddrop.server.draganddrop.configurations;
+package fi.jasoft.draganddrop.configurations;
 
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -18,11 +18,11 @@ import com.google.gwt.user.rebind.SourceWriter;
 import com.vaadin.client.ComponentConnector;
 import com.vaadin.shared.ui.Connect;
 
-import fi.jasoft.draganddrop.client.draganddrop.DragAndDropConfiguration;
-import fi.jasoft.draganddrop.client.draganddrop.DragAndDropConfigurationManager;
-import fi.jasoft.draganddrop.client.draganddrop.configurations.AbstractDragAndDropConfiguration;
-import fi.jasoft.draganddrop.server.draganddrop.DragAndDropHandler;
-import fi.jasoft.draganddrop.server.draganddrop.DropHandler;
+import fi.jasoft.draganddrop.DragAndDropHandler;
+import fi.jasoft.draganddrop.DropHandler;
+import fi.jasoft.draganddrop.client.DragAndDropConfiguration;
+import fi.jasoft.draganddrop.client.DragAndDropConfigurationManager;
+import fi.jasoft.draganddrop.client.configurations.AbstractDragAndDropConfiguration;
 
 public class DragAndDropConfigurationManagerGenerator extends Generator {
 

@@ -1,4 +1,4 @@
-package fi.jasoft.draganddrop.client.draganddrop;
+package fi.jasoft.draganddrop.client;
 
 import com.google.gwt.dom.client.NativeEvent;
 import com.vaadin.client.ComponentConnector;

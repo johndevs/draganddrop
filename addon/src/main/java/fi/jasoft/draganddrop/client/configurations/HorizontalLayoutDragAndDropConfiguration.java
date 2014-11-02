@@ -1,4 +1,4 @@
-package fi.jasoft.draganddrop.client.draganddrop.configurations;
+package fi.jasoft.draganddrop.client.configurations;
 
 import com.google.gwt.dom.client.NativeEvent;
 import com.vaadin.client.Util;
@@ -7,11 +7,11 @@ import com.vaadin.client.ui.orderedlayout.Slot;
 import com.vaadin.client.ui.orderedlayout.VerticalLayoutConnector;
 import com.vaadin.shared.Connector;
 
-import fi.jasoft.draganddrop.client.draganddrop.DragAndDropConfiguration;
-import fi.jasoft.draganddrop.client.draganddrop.DragAndDropServerRpc;
-import fi.jasoft.draganddrop.client.draganddrop.DragAndDropEvent.DragEnterEvent;
-import fi.jasoft.draganddrop.client.draganddrop.DragAndDropEvent.DropEvent;
-import fi.jasoft.draganddrop.server.draganddrop.handlers.HorizontalLayoutDropHandler;
+import fi.jasoft.draganddrop.client.DragAndDropConfiguration;
+import fi.jasoft.draganddrop.client.DragAndDropServerRpc;
+import fi.jasoft.draganddrop.client.DragAndDropEvent.DragEnterEvent;
+import fi.jasoft.draganddrop.client.DragAndDropEvent.DropEvent;
+import fi.jasoft.draganddrop.handlers.HorizontalLayoutDropHandler;
 
 @DragAndDropConfiguration(HorizontalLayoutDropHandler.class)
 public class HorizontalLayoutDragAndDropConfiguration extends OrderedLayoutDragAndDropConfiguration<VerticalLayoutConnector> {

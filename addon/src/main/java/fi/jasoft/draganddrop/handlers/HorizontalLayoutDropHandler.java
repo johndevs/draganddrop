@@ -1,14 +1,14 @@
-package fi.jasoft.draganddrop.server.draganddrop.handlers;
+package fi.jasoft.draganddrop.handlers;
 
 import com.vaadin.shared.Connector;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
 
-import fi.jasoft.draganddrop.client.draganddrop.DragAndDropServerRpc;
-import fi.jasoft.draganddrop.client.draganddrop.configurations.HorizontalLayoutDragAndDropConfiguration.Alignment;
-import fi.jasoft.draganddrop.client.draganddrop.configurations.HorizontalLayoutDragAndDropConfiguration.HorizontalLayoutDropHandlerRpc;
-import fi.jasoft.draganddrop.server.draganddrop.DragAndDropHandler;
-import fi.jasoft.draganddrop.server.draganddrop.DropHandler;
+import fi.jasoft.draganddrop.DragAndDropHandler;
+import fi.jasoft.draganddrop.DropHandler;
+import fi.jasoft.draganddrop.client.DragAndDropServerRpc;
+import fi.jasoft.draganddrop.client.configurations.HorizontalLayoutDragAndDropConfiguration.Alignment;
+import fi.jasoft.draganddrop.client.configurations.HorizontalLayoutDragAndDropConfiguration.HorizontalLayoutDropHandlerRpc;
 
 @DragAndDropHandler(HorizontalLayout.class)
 public class HorizontalLayoutDropHandler extends DropHandler<HorizontalLayout>{

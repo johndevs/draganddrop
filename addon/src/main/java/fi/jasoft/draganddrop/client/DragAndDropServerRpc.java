@@ -1,4 +1,4 @@
-package fi.jasoft.draganddrop.client.draganddrop;
+package fi.jasoft.draganddrop.client;
 
 import com.vaadin.shared.Connector;
 import com.vaadin.shared.communication.ServerRpc;

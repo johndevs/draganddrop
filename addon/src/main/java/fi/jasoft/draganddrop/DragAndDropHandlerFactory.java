@@ -1,4 +1,4 @@
-package fi.jasoft.draganddrop.server.draganddrop;
+package fi.jasoft.draganddrop;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,9 +7,9 @@ import com.vaadin.server.AbstractClientConnector;
 import com.vaadin.shared.Connector;
 import com.vaadin.ui.Component;
 
-import fi.jasoft.draganddrop.server.draganddrop.handlers.DefaultDropHandler;
-import fi.jasoft.draganddrop.server.draganddrop.handlers.HorizontalLayoutDropHandler;
-import fi.jasoft.draganddrop.server.draganddrop.handlers.VerticalLayoutDropHandler;
+import fi.jasoft.draganddrop.handlers.DefaultDropHandler;
+import fi.jasoft.draganddrop.handlers.HorizontalLayoutDropHandler;
+import fi.jasoft.draganddrop.handlers.VerticalLayoutDropHandler;
 
 public final class DragAndDropHandlerFactory {
 

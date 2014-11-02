@@ -1,4 +1,4 @@
-package fi.jasoft.draganddrop.client.draganddrop;
+package fi.jasoft.draganddrop.client;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,14 +28,14 @@ import com.vaadin.client.extensions.AbstractExtensionConnector;
 import com.vaadin.client.ui.VOverlay;
 import com.vaadin.shared.ui.Connect;
 
-import fi.jasoft.draganddrop.client.draganddrop.DragAndDropEvent.DragEnterEvent;
-import fi.jasoft.draganddrop.client.draganddrop.DragAndDropEvent.DragLeaveEvent;
-import fi.jasoft.draganddrop.client.draganddrop.DragAndDropEvent.DropEvent;
-import fi.jasoft.draganddrop.client.draganddrop.configurations.AbstractDragAndDropConfiguration;
-import fi.jasoft.draganddrop.client.draganddrop.configurations.DefaultDragAndDropConfiguration;
-import fi.jasoft.draganddrop.server.draganddrop.DragAndDrop;
-import fi.jasoft.draganddrop.shared.draganddrop.DragAndDropOperation;
-import fi.jasoft.draganddrop.shared.draganddrop.DragAndDropState;
+import fi.jasoft.draganddrop.DragAndDrop;
+import fi.jasoft.draganddrop.client.DragAndDropEvent.DragEnterEvent;
+import fi.jasoft.draganddrop.client.DragAndDropEvent.DragLeaveEvent;
+import fi.jasoft.draganddrop.client.DragAndDropEvent.DropEvent;
+import fi.jasoft.draganddrop.client.configurations.AbstractDragAndDropConfiguration;
+import fi.jasoft.draganddrop.client.configurations.DefaultDragAndDropConfiguration;
+import fi.jasoft.draganddrop.shared.DragAndDropOperation;
+import fi.jasoft.draganddrop.shared.DragAndDropState;
 
 /**
  * Connects the server side component with the client side widget

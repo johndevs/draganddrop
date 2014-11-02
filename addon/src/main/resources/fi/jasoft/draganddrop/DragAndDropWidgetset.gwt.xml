@@ -10,7 +10,7 @@
         <collapse-all-properties />
         <set-property name="compiler.useSymbolMaps" value="true" />
         
-        <generate-with class="fi.jasoft.draganddrop.server.draganddrop.configurations.DragAndDropConfigurationManagerGenerator">
-			<when-type-assignable class="fi.jasoft.draganddrop.client.draganddrop.DragAndDropConfigurationManager" />    
+        <generate-with class="fi.jasoft.draganddrop.configurations.DragAndDropConfigurationManagerGenerator">
+			<when-type-assignable class="fi.jasoft.draganddrop.client.DragAndDropConfigurationManager" />    
 		</generate-with> 
 </module>

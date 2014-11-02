@@ -1,13 +1,13 @@
-package fi.jasoft.draganddrop.client.draganddrop.configurations;
+package fi.jasoft.draganddrop.client.configurations;
 
 import com.vaadin.client.ComponentConnector;
 import com.vaadin.client.FastStringMap;
 import com.vaadin.client.communication.RpcProxy;
 import com.vaadin.shared.communication.ServerRpc;
 
-import fi.jasoft.draganddrop.client.draganddrop.DragAndDropConnector;
-import fi.jasoft.draganddrop.client.draganddrop.DragAndDropServerRpc;
-import fi.jasoft.draganddrop.client.draganddrop.DragAndDropEvent.*;
+import fi.jasoft.draganddrop.client.DragAndDropConnector;
+import fi.jasoft.draganddrop.client.DragAndDropServerRpc;
+import fi.jasoft.draganddrop.client.DragAndDropEvent.*;
 
 public abstract class AbstractDragAndDropConfiguration<T extends ComponentConnector> {
 	

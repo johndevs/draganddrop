@@ -1,10 +1,10 @@
-package fi.jasoft.draganddrop.server.draganddrop.handlers;
+package fi.jasoft.draganddrop.handlers;
 
 import com.vaadin.server.AbstractClientConnector;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.VerticalLayout;
 
-import fi.jasoft.draganddrop.server.draganddrop.DropHandler;
+import fi.jasoft.draganddrop.DropHandler;
 
 public class DefaultDropHandler extends DropHandler<Component>{
 

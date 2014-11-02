@@ -11,4 +11,4 @@ import com.vaadin.server.VaadinServlet;
         @WebInitParam(name="ui", value="fi.jasoft.draganddrop.DemoUI"),
 	    @WebInitParam(name="widgetset", value="fi.jasoft.draganddrop.DemoWidgetset")
     })
-public class MyApplicationServlet extends VaadinServlet { }
+public class DemoServlet extends VaadinServlet { }

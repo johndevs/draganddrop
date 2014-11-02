@@ -1,9 +1,9 @@
-package fi.jasoft.draganddrop.server.draganddrop;
+package fi.jasoft.draganddrop;
 
 import com.vaadin.shared.Connector;
 import com.vaadin.ui.Component;
 
-import fi.jasoft.draganddrop.client.draganddrop.DragAndDropServerRpc;
+import fi.jasoft.draganddrop.client.DragAndDropServerRpc;
 
 @SuppressWarnings("serial")
 public abstract class DropHandler<T extends Component>{

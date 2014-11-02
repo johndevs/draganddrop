@@ -1,4 +1,4 @@
-package fi.jasoft.draganddrop.shared.draganddrop;
+package fi.jasoft.draganddrop.shared;
 
 import java.util.ArrayList;
 import java.util.List;

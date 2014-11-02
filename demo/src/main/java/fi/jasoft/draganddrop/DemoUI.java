@@ -9,9 +9,7 @@ import com.vaadin.ui.Notification;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
-import fi.jasoft.draganddrop.server.draganddrop.DragAndDrop;
-import fi.jasoft.draganddrop.server.draganddrop.DropHandler;
-import fi.jasoft.draganddrop.shared.draganddrop.DragAndDropOperation;
+import fi.jasoft.draganddrop.shared.DragAndDropOperation;
 
 @Theme("MyApplication")
 public class DemoUI extends UI{

@@ -1,12 +1,12 @@
-package fi.jasoft.draganddrop.server.draganddrop;
+package fi.jasoft.draganddrop;
 
 import com.vaadin.server.AbstractClientConnector;
 import com.vaadin.server.AbstractExtension;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.HasComponents;
 
-import fi.jasoft.draganddrop.shared.draganddrop.DragAndDropOperation;
-import fi.jasoft.draganddrop.shared.draganddrop.DragAndDropState;
+import fi.jasoft.draganddrop.shared.DragAndDropOperation;
+import fi.jasoft.draganddrop.shared.DragAndDropState;
 
 /**
  * Drag & Drop extension for enabling drag and drop operations on any component
