@@ -5,6 +5,8 @@ import com.vaadin.server.AbstractExtension;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.HasComponents;
 
+import fi.jasoft.draganddrop.handlers.DropHandler;
+import fi.jasoft.draganddrop.handlers.DragOverHandler;
 import fi.jasoft.draganddrop.shared.DragAndDropOperation;
 import fi.jasoft.draganddrop.shared.DragAndDropState;
 
@@ -25,6 +27,8 @@ public class DragAndDrop<T extends Component> extends AbstractExtension {
 		private T connector;
 		
 		private DropHandler<T> dropHandler;
+		
+		private DragOverHandler<T> overHandler;
 		
 		private DragAndDrop<T> extension;
 		
@@ -59,6 +63,13 @@ public class DragAndDrop<T extends Component> extends AbstractExtension {
 			this.dropHandler = handler;
 			dropHandler.setTargetComponent(connector);
 			extension.registerRpc(dropHandler.getRpc());		
+			return this;
+		}
+		
+		public DragAndDropConfigurator<T> onOver(DragOverHandler<T> handler) {
+			this.overHandler = handler;
+			overHandler.setTargetComponent(connector);
+			extension.registerRpc(overHandler.getRpc());
 			return this;
 		}
 	}	

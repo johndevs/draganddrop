@@ -19,10 +19,10 @@ import com.vaadin.client.ComponentConnector;
 import com.vaadin.shared.ui.Connect;
 
 import fi.jasoft.draganddrop.DragAndDropHandler;
-import fi.jasoft.draganddrop.DropHandler;
 import fi.jasoft.draganddrop.client.DragAndDropConfiguration;
 import fi.jasoft.draganddrop.client.DragAndDropConfigurationManager;
 import fi.jasoft.draganddrop.client.configurations.AbstractDragAndDropConfiguration;
+import fi.jasoft.draganddrop.handlers.DropHandler;
 
 public class DragAndDropConfigurationManagerGenerator extends Generator {
 

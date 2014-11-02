@@ -3,5 +3,12 @@
 @mixin Demo {
 	@include valo;
 
-	/* Add your theme selectors here */
+	.drag-demo {		
+		.item {
+			background-color: #eee;
+			border: 2px dashed gray;
+			padding:5px;
+			width: 200px;
+		}
+	}
 }

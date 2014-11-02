@@ -8,6 +8,7 @@ import com.vaadin.shared.Connector;
 import com.vaadin.ui.Component;
 
 import fi.jasoft.draganddrop.handlers.DefaultDropHandler;
+import fi.jasoft.draganddrop.handlers.DropHandler;
 import fi.jasoft.draganddrop.handlers.HorizontalLayoutDropHandler;
 import fi.jasoft.draganddrop.handlers.VerticalLayoutDropHandler;
 

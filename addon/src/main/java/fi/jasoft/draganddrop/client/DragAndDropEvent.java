@@ -14,10 +14,18 @@ public abstract class DragAndDropEvent {
 	}
 	
 	public static class DragEnterEvent extends DragAndDropEvent {
+		
+		private ComponentConnector over;
+		
 		public DragEnterEvent(ComponentConnector targetConnector,
-				ComponentConnector draggedConnector, NativeEvent event) {
+				ComponentConnector draggedConnector, ComponentConnector over, NativeEvent event) {
 			super(targetConnector, draggedConnector, event);
+			this.over = over;
 		}		
+		
+		public ComponentConnector getOverConnector() {
+			return this.over;
+		}
 	}
 	
 	public static class DragLeaveEvent extends DragAndDropEvent {

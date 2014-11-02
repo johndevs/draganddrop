@@ -5,7 +5,6 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.VerticalLayout;
 
 import fi.jasoft.draganddrop.DragAndDropHandler;
-import fi.jasoft.draganddrop.DropHandler;
 import fi.jasoft.draganddrop.client.DragAndDropServerRpc;
 import fi.jasoft.draganddrop.client.configurations.VerticalLayoutDragAndDropConfiguration.Alignment;
 import fi.jasoft.draganddrop.client.configurations.VerticalLayoutDragAndDropConfiguration.VerticalLayoutDropHandlerRpc;
@@ -29,10 +28,16 @@ public class VerticalLayoutDropHandler extends DropHandler<VerticalLayout>{
 				onDrop((Component) dragged, index, verticalAlign); 
 			}			
 		}
+
+		@Override
+		public void over(Connector source, Connector dragged, Connector over) {
+			// TODO Auto-generated method stub
+			
+		}
 	};
 
 	@Override
-	protected DragAndDropServerRpc getRpc() {		
+	public DragAndDropServerRpc getRpc() {		
 		return rpc;
 	}
 	

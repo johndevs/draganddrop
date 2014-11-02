@@ -13,7 +13,7 @@ public abstract class AbstractDragAndDropConfiguration<T extends ComponentConnec
 	
 	public static final String ACTIVE_STYLE_NAME = "dd-active";
 	
-	private FastStringMap<ServerRpc> rpcProxyMap = FastStringMap.create();
+	private final FastStringMap<ServerRpc> rpcProxyMap = FastStringMap.create();
 	
 	private DragAndDropConnector connector;
 	
@@ -28,6 +28,7 @@ public abstract class AbstractDragAndDropConfiguration<T extends ComponentConnec
 	
 	public void dragEnter(DragEnterEvent event) {
 		event.getTargetConnector().getWidget().addStyleName(ACTIVE_STYLE_NAME);
+		getRpcProxy(DragAndDropServerRpc.class).over(event.getTargetConnector(), event.getDraggedConnector(), event.getOverConnector());
 	}
 	
 	public void dragLeave(DragLeaveEvent event) {

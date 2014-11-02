@@ -303,7 +303,7 @@ public class DragAndDropConnector extends AbstractExtensionConnector {
 		if (currentDraggedComponent != null) {		
 			getLogger().info("Drag over "+targetComponent);
 			DragEnterEvent ddEvemt = new DragEnterEvent(targetComponent,
-					currentDraggedComponent, event);
+					currentDraggedComponent, targetComponent, event);
 			try{
 				dragElement.getStyle().setDisplay(Display.NONE);
 				configuration.dragEnter(ddEvemt);
