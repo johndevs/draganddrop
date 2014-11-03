@@ -333,6 +333,8 @@ public class DragAndDropConnector extends AbstractExtensionConnector {
 
 	private void setDragImage(Element dragImage, double offsetX, double offsetY) {
 		dragElement = dragImage;
+		dragElement.getStyle().setMarginLeft(offsetX, Unit.PX);
+		dragElement.getStyle().setMarginTop(offsetY, Unit.PX);		
 	}
 
 	private void createDragImage(Element element, boolean alignImageToEvent) {
