@@ -2,24 +2,24 @@ package fi.jasoft.draganddrop.shared;
 
 public enum DragAndDropOperation {
 	/**
-	 * Disables starting drag operations from compontents
+	 * Drag operation
 	 */
-	DRAGGING, 
+	DRAG, 
 	
 	/**
 	 * Disables dropping components
 	 */
-	DROPPING, 
+	DROP, 
 	
 	
 	/**
-	 * Disables re-ordering components in layouts
+	 * Re-ordering of components in layouts
 	 */
-	REORDERING,
+	REORDER,
 	
 	
 	/**
-	 * Disable all drag & drop operations in layout
+	 * All drag & drop operations
 	 */
 	ALL
 }

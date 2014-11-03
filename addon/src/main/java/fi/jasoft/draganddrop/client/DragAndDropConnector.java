@@ -77,33 +77,25 @@ public class DragAndDropConnector extends AbstractExtensionConnector {
 				
 				case BrowserEvents.DRAGOVER:
 				case BrowserEvents.MOUSEOVER: {					
-					if(dragElement != null){
-						DragAndDropConnector targetConnector = getTargetConnector(nativeEvent);
-						
-						if(currentlyOverConnector != null && currentlyOverConnector != targetConnector){
-							currentlyOverConnector.onMouseOut(nativeEvent);
-							currentlyOverConnector = null;
-						}						
-						
-						if(targetConnector != null){							
-							currentlyOverConnector = targetConnector;
-							targetConnector.onMouseOver(nativeEvent);		
+					if(dragElement != null){						
+						if(dragElement == Element.as(nativeEvent.getEventTarget())) {
+							return;
 						}
+						
+						DragAndDropConnector targetConnector = getTargetConnector(nativeEvent);										
+						if(targetConnector != currentlyOverConnector) {														
+							if(currentlyOverConnector != null){
+								currentlyOverConnector.onMouseOut(nativeEvent);			
+							}																		
+							currentlyOverConnector = targetConnector;
+							if(currentlyOverConnector != null){
+								currentlyOverConnector.onMouseOver(nativeEvent);
+							}							
+						}												
 					}
 				}	
 				break;
-				
-				case BrowserEvents.DRAGLEAVE:
-				case BrowserEvents.MOUSEOUT: {
-					if(dragElement != null){
-						DragAndDropConnector targetConnector = getTargetConnector(nativeEvent);
-						if(targetConnector != null){
-							targetConnector.onMouseOut(nativeEvent);	
-						}
-					}
-				}
-				break;
-				
+								
 				case BrowserEvents.DRAGEND:
 				case BrowserEvents.MOUSEUP: {
 					if(dragElement != null){
@@ -114,7 +106,8 @@ public class DragAndDropConnector extends AbstractExtensionConnector {
 						DragAndDropConnector targetConnector = getTargetConnector(nativeEvent);							
 						if(targetConnector != null){
 							targetConnector.onMouseUp(nativeEvent);
-						}																
+						}							
+						currentlyOverConnector = null;
 
 						detachDragElement();						
 					}							
@@ -169,15 +162,15 @@ public class DragAndDropConnector extends AbstractExtensionConnector {
 	}
 	
 	private boolean isDraggingDisabled() {
-		return isDragAndDropDisabled() || getState().disabled.contains(DragAndDropOperation.DRAGGING);
+		return isDragAndDropDisabled() || getState().disabled.contains(DragAndDropOperation.DRAG);
 	}
 	
 	private boolean isReorderingDisabled() {
-		return isDragAndDropDisabled() || getState().disabled.contains(DragAndDropOperation.REORDERING);
+		return isDragAndDropDisabled() || getState().disabled.contains(DragAndDropOperation.REORDER);
 	}
 	
 	private boolean isDroppingDisabled() {
-		boolean disabled = isDragAndDropDisabled() || getState().disabled.contains(DragAndDropOperation.DROPPING);
+		boolean disabled = isDragAndDropDisabled() || getState().disabled.contains(DragAndDropOperation.DROP);
 		if(getState().fromLayout != null) {
 			// from layout
 			disabled |= currentDraggedComponent.getParent() != getState().fromLayout;
@@ -294,11 +287,7 @@ public class DragAndDropConnector extends AbstractExtensionConnector {
 		}	
 	}
 
-	protected void onMouseOver(NativeEvent event) {		
-		if(isDroppingDisabled()){
-			return;
-		}		
-		
+	protected void onMouseOver(NativeEvent event) {	
 		AbstractDragAndDropConfiguration<? extends ComponentConnector> configuration = getConfiguration();
 		if (currentDraggedComponent != null) {		
 			getLogger().info("Drag over "+targetComponent);
@@ -313,11 +302,7 @@ public class DragAndDropConnector extends AbstractExtensionConnector {
 		}		
 	}
 
-	protected void onMouseOut(NativeEvent event) {
-		if(isDroppingDisabled()){
-			return;
-		}		
-		
+	protected void onMouseOut(NativeEvent event) {			
 		AbstractDragAndDropConfiguration<? extends ComponentConnector> configuration = getConfiguration();
 		if (currentDraggedComponent != null) {			
 			DragLeaveEvent ddEvemt = new DragLeaveEvent(targetComponent,

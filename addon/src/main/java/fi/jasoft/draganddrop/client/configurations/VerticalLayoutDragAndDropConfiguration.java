@@ -7,15 +7,15 @@ import com.vaadin.client.ui.orderedlayout.VerticalLayoutConnector;
 import com.vaadin.shared.Connector;
 
 import fi.jasoft.draganddrop.client.DragAndDropConfiguration;
-import fi.jasoft.draganddrop.client.DragAndDropServerRpc;
 import fi.jasoft.draganddrop.client.DragAndDropEvent.DragEnterEvent;
 import fi.jasoft.draganddrop.client.DragAndDropEvent.DropEvent;
+import fi.jasoft.draganddrop.client.rpc.DropServerRpc;
 import fi.jasoft.draganddrop.handlers.VerticalLayoutDropHandler;
 
 @DragAndDropConfiguration(VerticalLayoutDropHandler.class)
 public class VerticalLayoutDragAndDropConfiguration extends OrderedLayoutDragAndDropConfiguration<VerticalLayoutConnector> {
 
-	public interface VerticalLayoutDropHandlerRpc extends DragAndDropServerRpc {		
+	public interface VerticalLayoutDropHandlerRpc extends DropServerRpc {		
 		public void drop(Connector source, Connector dragged, int index, Alignment verticalAlign);		
 	}	
 	

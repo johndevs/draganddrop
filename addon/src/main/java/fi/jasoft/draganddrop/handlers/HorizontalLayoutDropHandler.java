@@ -5,7 +5,6 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
 
 import fi.jasoft.draganddrop.DragAndDropHandler;
-import fi.jasoft.draganddrop.client.DragAndDropServerRpc;
 import fi.jasoft.draganddrop.client.configurations.HorizontalLayoutDragAndDropConfiguration.Alignment;
 import fi.jasoft.draganddrop.client.configurations.HorizontalLayoutDragAndDropConfiguration.HorizontalLayoutDropHandlerRpc;
 
@@ -17,49 +16,43 @@ public class HorizontalLayoutDropHandler extends DropHandler<HorizontalLayout>{
 		
 		@Override
 		public void drop(Connector source, Connector dragged) {
-			if(source == getTargetComponent()) {
+			if(source == getSource()) {
 				onDrop((Component) dragged); 
 			}
 		}
 		
 		@Override
 		public void drop(Connector source, Connector dragged, int index, Alignment horizontalAlign) {
-			if(source == getTargetComponent()) {
+			if(source == getSource()) {
 				onDrop((Component) dragged, index, horizontalAlign); 
 			}			
-		}
-
-		@Override
-		public void over(Connector source, Connector dragged, Connector over) {
-			// TODO Auto-generated method stub
-			
 		}
 	};
 
 	@Override
-	public DragAndDropServerRpc getRpc() {		
+	public HorizontalLayoutDropHandlerRpc getRpc() {		
 		return rpc;
 	}
 	
 	protected void onDrop(Component component, int index, Alignment horizontalAlign) {	
-		if(getTargetComponent().getComponent(index) == component){
+		if(getSource().getComponent(index) == component){
 			return;
 		}		
 		
-		getTargetComponent().removeComponent(component);
+		getSource().removeComponent(component);
 		
 		if(index > -1){
 			if(horizontalAlign != Alignment.LEFT){
 				index++;
 			} 					
-			getTargetComponent().addComponent(component, index);		
+			getSource().addComponent(component, index);		
 		} else {
-			getTargetComponent().addComponent(component);		
+			getSource().addComponent(component);		
 		}		
 	}		
 
 	@Override
 	protected void onDrop(Component component) {		
-		getTargetComponent().addComponent(component);			
+		getSource().addComponent(component);			
 	}
 }

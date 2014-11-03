@@ -5,7 +5,6 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.VerticalLayout;
 
 import fi.jasoft.draganddrop.DragAndDropHandler;
-import fi.jasoft.draganddrop.client.DragAndDropServerRpc;
 import fi.jasoft.draganddrop.client.configurations.VerticalLayoutDragAndDropConfiguration.Alignment;
 import fi.jasoft.draganddrop.client.configurations.VerticalLayoutDragAndDropConfiguration.VerticalLayoutDropHandlerRpc;
 
@@ -17,46 +16,40 @@ public class VerticalLayoutDropHandler extends DropHandler<VerticalLayout>{
 		
 		@Override
 		public void drop(Connector source, Connector dragged) {
-			if(source == getTargetComponent()) {
+			if(source == getSource()) {
 				onDrop((Component) dragged); 
 			}
 		}
 		
 		@Override
 		public void drop(Connector source, Connector dragged, int index, Alignment verticalAlign) {
-			if(source == getTargetComponent()) {
+			if(source == getSource()) {
 				onDrop((Component) dragged, index, verticalAlign); 
 			}			
-		}
-
-		@Override
-		public void over(Connector source, Connector dragged, Connector over) {
-			// TODO Auto-generated method stub
-			
 		}
 	};
 
 	@Override
-	public DragAndDropServerRpc getRpc() {		
+	public VerticalLayoutDropHandlerRpc getRpc() {		
 		return rpc;
 	}
 	
 	protected void onDrop(Component component, int index, Alignment verticalAlign) {	
-		if(getTargetComponent().getComponent(index) == component){
+		if(getSource().getComponent(index) == component){
 			return;
 		}						
 		if(index > -1){
 			if(verticalAlign != Alignment.TOP){
 				index++;
 			} 				
-			getTargetComponent().addComponent(component, index);		
+			getSource().addComponent(component, index);		
 		} else {
-			getTargetComponent().addComponent(component);		
+			getSource().addComponent(component);		
 		}		
 	}		
 
 	@Override
 	protected void onDrop(Component component) {		
-		getTargetComponent().addComponent(component);			
+		getSource().addComponent(component);			
 	}
 }
