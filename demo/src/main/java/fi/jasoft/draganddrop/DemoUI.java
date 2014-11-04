@@ -10,6 +10,7 @@ import com.vaadin.ui.MenuBar.MenuItem;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.themes.ValoTheme;
 
 import fi.jasoft.draganddrop.demos.DragDemo;
 
@@ -29,7 +30,8 @@ public class DemoUI extends UI{
 		navigator.navigateTo("drag");
 		
 		MenuBar demos = new MenuBar();
-		demos.addItem("Drag", new Command() {
+		demos.setStyleName(ValoTheme.MENUBAR_BORDERLESS);
+		demos.addItem("Basic drag & drop", new Command() {
 			
 			@Override
 			public void menuSelected(MenuItem selectedItem) {

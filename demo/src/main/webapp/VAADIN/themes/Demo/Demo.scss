@@ -2,13 +2,12 @@
 
 @mixin Demo {
 	@include valo;
-
-	.drag-demo {		
-		.item {
-			background-color: #eee;
-			border: 2px dashed gray;
-			padding:5px;
-			width: 200px;
-		}
+	
+	.item {
+		background-color: #eee;
+		border: 2px dashed gray;
+		padding:5px;
+		width: 200px;
 	}
+	
 }

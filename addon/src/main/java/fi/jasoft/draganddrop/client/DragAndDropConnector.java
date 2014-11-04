@@ -71,18 +71,8 @@ public class DragAndDropConnector extends AbstractExtensionConnector {
 				case BrowserEvents.MOUSEMOVE: {
 					if(dragElement != null){						
 						updateDragImagePosition(nativeEvent);
-					}					
-				} 
-				break;
-				
-				case BrowserEvents.DRAGOVER:
-				case BrowserEvents.MOUSEOVER: {					
-					if(dragElement != null){						
-						if(dragElement == Element.as(nativeEvent.getEventTarget())) {
-							return;
-						}
 						
-						DragAndDropConnector targetConnector = getTargetConnector(nativeEvent);										
+						DragAndDropConnector targetConnector = getTargetConnector(nativeEvent);
 						if(targetConnector != currentlyOverConnector) {														
 							if(currentlyOverConnector != null){
 								currentlyOverConnector.onMouseOut(nativeEvent);			
@@ -90,12 +80,12 @@ public class DragAndDropConnector extends AbstractExtensionConnector {
 							currentlyOverConnector = targetConnector;
 							if(currentlyOverConnector != null){
 								currentlyOverConnector.onMouseOver(nativeEvent);
-							}							
-						}												
+							}
+						}
 					}
-				}	
+				}
 				break;
-								
+
 				case BrowserEvents.DRAGEND:
 				case BrowserEvents.MOUSEUP: {
 					if(dragElement != null){
