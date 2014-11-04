@@ -6,4 +6,27 @@
 .Demo {
   @include addons;
   @include Demo;
+}  
+
+.v-toolbox {
+
+	.source-caption {
+		height:25px;
+		-webkit-transform: rotate(90deg);   
+		-moz-transform: rotate(90deg);
+		-ms-transform: rotate(90deg);
+		-o-transform: rotate(90deg);
+		transform: rotate(90deg);
+		width:100%;
+		height:100%;	
+		margin-top:250px;	
+	}
+	
+	.v-horizontallayout {
+		background-color:#eee;
+	}
+	
+	.v-slot-source-caption {		
+		width:25px;
+	}
 }

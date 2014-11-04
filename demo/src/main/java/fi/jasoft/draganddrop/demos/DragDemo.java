@@ -38,6 +38,7 @@ public class DragDemo extends VerticalLayout implements View {
 		hl.setSizeFull();
 		addComponent(hl);
 		
+		//source-start		
 		// Create image
 		Image image = new Image(null, new ThemeResource("graphics/bin.jpg"));
 
@@ -80,6 +81,8 @@ public class DragDemo extends VerticalLayout implements View {
 			}
 		});
 		
+		//source-end
+		
 		hl.addComponent(image);
 		hl.setComponentAlignment(image, Alignment.TOP_CENTER);
 		
@@ -89,6 +92,7 @@ public class DragDemo extends VerticalLayout implements View {
 		hl.addComponent(vl);
 		hl.setComponentAlignment(vl, Alignment.TOP_CENTER);
 		
+		//source-start		
 		for(int i=0; i < 5; i++){
 			Label item = new Label("Item "+(i+1));
 			item.setStyleName("item");
@@ -98,7 +102,8 @@ public class DragDemo extends VerticalLayout implements View {
 			DragAndDrop.enable(item, DragAndDropOperation.DRAG);
 			
 			vl.addComponent(item);
-		}		
+		}				
+		//source-end
 	}
 
 }
