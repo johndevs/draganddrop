@@ -12,14 +12,11 @@ import java.util.List;
 import org.vaadin.johan.Toolbox;
 import org.vaadin.johan.Toolbox.ORIENTATION;
 
-import com.google.gwt.thirdparty.guava.common.io.Files;
 import com.vaadin.annotations.Theme;
 import com.vaadin.navigator.Navigator;
-import com.vaadin.navigator.View;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Alignment;
-import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.MenuBar;
@@ -36,6 +33,7 @@ import de.java2html.javasource.JavaSourceParser;
 import de.java2html.options.JavaSourceConversionOptions;
 import de.java2html.util.IllegalConfigurationException;
 import fi.jasoft.draganddrop.demos.DragDemo;
+import fi.jasoft.draganddrop.demos.ListDemo;
 
 @Theme("Demo")
 public class DemoUI extends UI {
@@ -43,6 +41,7 @@ public class DemoUI extends UI {
 	private List<DemoView> views = new ArrayList<>();
 	{
 		views.add(new DragDemo());
+		views.add(new ListDemo());
 	}
 
 	private Label codeLabel = new Label("No source available.",

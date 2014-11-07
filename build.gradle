@@ -4,8 +4,8 @@ allprojects {
 }
 
 subprojects {
-    //apply from: 'http://plugins.jasoft.fi/vaadin.plugin?version=0.9-SNAPSHOT'
-    apply from: '/home/john/Repositories/gradle-vaadin-plugin/vaadin-development.plugin'    
+    apply from: 'http://plugins.jasoft.fi/vaadin.plugin?version=0.9-SNAPSHOT'
+    //apply from: '/home/john/Repositories/gradle-vaadin-plugin/vaadin-development.plugin'    
     apply plugin: 'eclipse-wtp'
     sourceCompatibility = 1.7
     targetCompatibility = 1.7

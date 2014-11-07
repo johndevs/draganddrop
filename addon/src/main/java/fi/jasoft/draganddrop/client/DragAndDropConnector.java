@@ -31,6 +31,7 @@ import com.vaadin.shared.ui.Connect;
 import fi.jasoft.draganddrop.DragAndDrop;
 import fi.jasoft.draganddrop.client.DragAndDropEvent.DragEnterEvent;
 import fi.jasoft.draganddrop.client.DragAndDropEvent.DragLeaveEvent;
+import fi.jasoft.draganddrop.client.DragAndDropEvent.DragOverEvent;
 import fi.jasoft.draganddrop.client.DragAndDropEvent.DropEvent;
 import fi.jasoft.draganddrop.client.configurations.AbstractDragAndDropConfiguration;
 import fi.jasoft.draganddrop.client.configurations.DefaultDragAndDropConfiguration;
@@ -44,68 +45,70 @@ import fi.jasoft.draganddrop.shared.DragAndDropState;
 @Connect(DragAndDrop.class)
 public class DragAndDropConnector extends AbstractExtensionConnector {
 	private static ComponentConnector currentDraggedComponent;
-	private static Element dragElement;	
-	private static final List<DragAndDropConnector> extensions = new ArrayList<DragAndDropConnector>();	
+	private static Element dragElement;
+	private static final List<DragAndDropConnector> extensions = new ArrayList<DragAndDropConnector>();
 	private static HandlerRegistration previewHandlerRegistration;
 	private static NativePreviewHandler previewHandler = new NativePreviewHandler() {
-		
-		
+
 		private DragAndDropConnector currentlyOverConnector;
-		
+
 		@Override
 		public void onPreviewNativeEvent(NativePreviewEvent event) {
 			NativeEvent nativeEvent = event.getNativeEvent();
 			String type = nativeEvent.getType();
-			
-			switch(type) {
-				case BrowserEvents.MOUSEDOWN:
-				case BrowserEvents.TOUCHSTART:{
-					DragAndDropConnector targetConnector = getTargetConnector(nativeEvent);
-					if(targetConnector != null){
-						targetConnector.onMouseDown(nativeEvent);
-					}					
+
+			switch (type) {
+			case BrowserEvents.MOUSEDOWN:
+			case BrowserEvents.TOUCHSTART: {
+				DragAndDropConnector targetConnector = getTargetConnector(nativeEvent);
+				if (targetConnector != null) {
+					targetConnector.onMouseDown(nativeEvent);
 				}
+			}
 				break;
-				
-				case BrowserEvents.TOUCHMOVE:
-				case BrowserEvents.MOUSEMOVE: {
-					if(dragElement != null){						
-						updateDragImagePosition(nativeEvent);
-						
-						DragAndDropConnector targetConnector = getTargetConnector(nativeEvent);
-						if(targetConnector != currentlyOverConnector) {														
-							if(currentlyOverConnector != null){
-								currentlyOverConnector.onMouseOut(nativeEvent);			
-							}																		
-							currentlyOverConnector = targetConnector;
-							if(currentlyOverConnector != null){
-								currentlyOverConnector.onMouseOver(nativeEvent);
-							}
+
+			case BrowserEvents.TOUCHMOVE:
+			case BrowserEvents.MOUSEMOVE: {
+				if (dragElement != null) {
+					updateDragImagePosition(nativeEvent);
+
+					DragAndDropConnector targetConnector = getTargetConnector(nativeEvent);
+					if (targetConnector != currentlyOverConnector) {
+						if (currentlyOverConnector != null) {
+							currentlyOverConnector.onDragLeave(nativeEvent);
 						}
+
+						currentlyOverConnector = targetConnector;
+						if (currentlyOverConnector != null) {
+							currentlyOverConnector.onDragEnter(nativeEvent);
+						}
+					} else if (currentlyOverConnector != null) {
+						currentlyOverConnector.onDragOver(nativeEvent);
 					}
 				}
+			}
 				break;
 
-				case BrowserEvents.DRAGEND:
-				case BrowserEvents.MOUSEUP: {
-					if(dragElement != null){
-						updateDragImagePosition(nativeEvent);										
+			case BrowserEvents.DRAGEND:
+			case BrowserEvents.MOUSEUP: {
+				if (dragElement != null) {
+					updateDragImagePosition(nativeEvent);
 
-						Event.releaseCapture(RootPanel.getBodyElement());
+					Event.releaseCapture(RootPanel.getBodyElement());
 
-						DragAndDropConnector targetConnector = getTargetConnector(nativeEvent);							
-						if(targetConnector != null){
-							targetConnector.onMouseUp(nativeEvent);
-						}							
-						currentlyOverConnector = null;
+					DragAndDropConnector targetConnector = getTargetConnector(nativeEvent);
+					if (targetConnector != null) {
+						targetConnector.onMouseUp(nativeEvent);
+					}
+					currentlyOverConnector = null;
 
-						detachDragElement();						
-					}							
-				} 
+					detachDragElement();
+				}
+			}
 				break;
-			}						
+			}
 		}
-	};		
+	};
 
 	private NativeEvent dragStartEvent;
 
@@ -125,14 +128,15 @@ public class DragAndDropConnector extends AbstractExtensionConnector {
 
 	@Override
 	protected void extend(ServerConnector target) {
-		getLogger().info("Registering "+target+" for drag and drop.");
+		getLogger().info("Registering " + target + " for drag and drop.");
 		extensions.add(this);
-		if(previewHandlerRegistration == null) {
-			previewHandlerRegistration = Event.addNativePreviewHandler(previewHandler);
-		}		
-		targetComponent = (ComponentConnector) target;		
+		if (previewHandlerRegistration == null) {
+			previewHandlerRegistration = Event
+					.addNativePreviewHandler(previewHandler);
+		}
+		targetComponent = (ComponentConnector) target;
 	}
-	
+
 	public ComponentConnector getTargetComponent() {
 		return targetComponent;
 	}
@@ -140,54 +144,57 @@ public class DragAndDropConnector extends AbstractExtensionConnector {
 	@Override
 	public void onUnregister() {
 		super.onUnregister();
-		extensions.remove(this);		
-		if(extensions.isEmpty() && previewHandlerRegistration != null) {
+		extensions.remove(this);
+		if (extensions.isEmpty() && previewHandlerRegistration != null) {
 			previewHandlerRegistration.removeHandler();
 			previewHandlerRegistration = null;
-		}		
+		}
 	}
-	
+
 	private boolean isDragAndDropDisabled() {
 		return getState().disabled.contains(DragAndDropOperation.ALL);
 	}
-	
+
 	private boolean isDraggingDisabled() {
-		return isDragAndDropDisabled() || getState().disabled.contains(DragAndDropOperation.DRAG);
+		return isDragAndDropDisabled()
+				|| getState().disabled.contains(DragAndDropOperation.DRAG);
 	}
-	
+
 	private boolean isReorderingDisabled() {
-		return isDragAndDropDisabled() || getState().disabled.contains(DragAndDropOperation.REORDER);
+		return isDragAndDropDisabled()
+				|| getState().disabled.contains(DragAndDropOperation.REORDER);
 	}
-	
+
 	private boolean isDroppingDisabled() {
-		boolean disabled = isDragAndDropDisabled() || getState().disabled.contains(DragAndDropOperation.DROP);
-		if(getState().fromLayout != null) {
+		boolean disabled = isDragAndDropDisabled()
+				|| getState().disabled.contains(DragAndDropOperation.DROP);
+		if (getState().fromLayout != null) {
 			// from layout
 			disabled |= currentDraggedComponent.getParent() != getState().fromLayout;
-		}		
-		if(getState().fromComponent != null) {
-			// from component
-			disabled |= currentDraggedComponent != getState().fromComponent; 
 		}
-		if(isReorderingDisabled()){
+		if (getState().fromComponent != null) {
+			// from component
+			disabled |= currentDraggedComponent != getState().fromComponent;
+		}
+		if (isReorderingDisabled()) {
 			// re-ordering
 			disabled |= getState().fromLayout == targetComponent;
-		}		
+		}
 		return disabled;
 	}
-	
-	protected void onMouseDown(NativeEvent event) {					
-		if(isDraggingDisabled()){
+
+	protected void onMouseDown(NativeEvent event) {
+		if (isDraggingDisabled()) {
 			return;
-		}		
-		
+		}
+
 		Element element = Element.as(event.getEventTarget());
 		Widget widget = Util.findWidget(element, null);
 		ComponentConnector connector = Util.findConnectorFor(widget);
-		if(connector == null){
+		if (connector == null) {
 			return;
 		}
-		
+
 		dragStartEvent = event;
 		createDragImage(connector.getWidget().getElement(), true);
 		attachDragElement(connector);
@@ -202,99 +209,100 @@ public class DragAndDropConnector extends AbstractExtensionConnector {
 		event.stopPropagation();
 	}
 
-	
-	private static DragAndDropConnector getTargetConnector(NativeEvent event) {		
+	private static DragAndDropConnector getTargetConnector(NativeEvent event) {
 		Node node;
-		if(dragElement != null){
-			dragElement.getStyle().setDisplay(Display.NONE);	
+		if (dragElement != null) {
+			dragElement.getStyle().setDisplay(Display.NONE);
 			node = Util.getElementUnderMouse(event);
 			dragElement.getStyle().setDisplay(Display.BLOCK);
-			if(node == null){
+			if (node == null) {
 				return null;
 			}
-		} else if(event.getEventTarget() != null){
+		} else if (event.getEventTarget() != null) {
 			node = Node.as(event.getEventTarget());
 		} else {
 			return null;
 		}
-		return getTargetConnector(node);		
+		return getTargetConnector(node);
 	}
-	
+
 	private static DragAndDropConnector getTargetConnector(Node node) {
 		assert node != null : "Cannot get connector for null node";
-		
+
 		List<DragAndDropConnector> matchingConnectors = new ArrayList<DragAndDropConnector>();
-		for (DragAndDropConnector connector : extensions) {						
-			if(connector.getTargetComponent().getWidget().getElement().isOrHasChild(node)) {
+		for (DragAndDropConnector connector : extensions) {
+			if (connector.getTargetComponent().getWidget().getElement()
+					.isOrHasChild(node)) {
 				matchingConnectors.add(connector);
-				
+
 			}
-		}		
-		
+		}
+
 		// Only one matching connector, return it
-		if(matchingConnectors.size() == 1){
+		if (matchingConnectors.size() == 1) {
 			return matchingConnectors.get(0);
 		}
-		
-		// Inner connectors with drag and drop enabled, need to search for the inner most child (maximum depth)
+
+		// Inner connectors with drag and drop enabled, need to search for the
+		// inner most child (maximum depth)
 		int depth = 0;
 		DragAndDropConnector con = null;
-		for(int i=0; i<matchingConnectors.size(); i++){
+		for (int i = 0; i < matchingConnectors.size(); i++) {
 			ServerConnector c = matchingConnectors.get(i);
 			int d = 0;
-			while(c != null){
+			while (c != null) {
 				d++;
 				c = c.getParent();
 			}
-			
-			if(d > depth){
+
+			if (d > depth) {
 				depth = d;
 				con = matchingConnectors.get(i);
-			}					
-		}				
+			}
+		}
 		return con;
 	}
-	
+
 	protected void onMouseUp(NativeEvent event) {
-		if(isDroppingDisabled()){
+		if (isDroppingDisabled()) {
 			return;
-		}		
-		
+		}
+
 		AbstractDragAndDropConfiguration<? extends ComponentConnector> configuration = getConfiguration();
 		try {
-			if (currentDraggedComponent != null) {			
+			if (currentDraggedComponent != null) {
 				DropEvent ddEvemt = new DropEvent(targetComponent,
 						currentDraggedComponent, event);
 				dragElement.getStyle().setDisplay(Display.NONE);
-				configuration.drop(ddEvemt);		
+				configuration.drop(ddEvemt);
 			} else {
 				getLogger().warning(
 						"Could not get drop configuration for "
 								+ targetComponent.getClass().getName());
-			}	
+			}
 		} finally {
 			currentDraggedComponent = null;
-		}	
+		}
 	}
 
-	protected void onMouseOver(NativeEvent event) {	
+	protected void onDragEnter(NativeEvent event) {
 		AbstractDragAndDropConfiguration<? extends ComponentConnector> configuration = getConfiguration();
-		if (currentDraggedComponent != null) {		
-			getLogger().info("Drag over "+targetComponent);
+		if (currentDraggedComponent != null) {
+			getLogger().info("Drag over " + targetComponent);
 			DragEnterEvent ddEvemt = new DragEnterEvent(targetComponent,
 					currentDraggedComponent, targetComponent, event);
-			try{
+			try {
 				dragElement.getStyle().setDisplay(Display.NONE);
 				configuration.dragEnter(ddEvemt);
 			} finally {
 				dragElement.getStyle().setDisplay(Display.BLOCK);
-			}			
-		}		
+			}
+		}
 	}
 
-	protected void onMouseOut(NativeEvent event) {			
+	protected void onDragLeave(NativeEvent event) {
 		AbstractDragAndDropConfiguration<? extends ComponentConnector> configuration = getConfiguration();
-		if (currentDraggedComponent != null) {			
+		if (currentDraggedComponent != null) {
 			DragLeaveEvent ddEvemt = new DragLeaveEvent(targetComponent,
 					currentDraggedComponent, event);
 			try {
@@ -302,16 +310,30 @@ public class DragAndDropConnector extends AbstractExtensionConnector {
 				configuration.dragLeave(ddEvemt);
 			} finally {
 				dragElement.getStyle().setDisplay(Display.BLOCK);
-			}			
-		}				
+			}
+		}
 	}
-	
+
+	protected void onDragOver(NativeEvent event) {
+		AbstractDragAndDropConfiguration<? extends ComponentConnector> configuration = getConfiguration();
+		if (currentDraggedComponent != null) {
+			DragOverEvent ddEvemt = new DragOverEvent(targetComponent,
+					currentDraggedComponent, event);
+			try {
+				dragElement.getStyle().setDisplay(Display.NONE);
+				configuration.dragOver(ddEvemt);
+			} finally {
+				dragElement.getStyle().setDisplay(Display.BLOCK);
+			}
+		}
+	}
+
 	protected AbstractDragAndDropConfiguration<? extends ComponentConnector> getConfiguration() {
 		String targetClassName = targetComponent.getClass().getName();
 		if (configurations.containsKey(targetClassName)) {
 			return configurations.get(targetClassName);
-		}			
-		
+		}
+
 		DefaultDragAndDropConfiguration defaultConf = new DefaultDragAndDropConfiguration();
 		defaultConf.setDragAndDropConnector(this);
 		return defaultConf;
@@ -324,13 +346,15 @@ public class DragAndDropConnector extends AbstractExtensionConnector {
 	private void setDragImage(Element dragImage, double offsetX, double offsetY) {
 		dragElement = dragImage;
 		dragElement.getStyle().setMarginLeft(offsetX, Unit.PX);
-		dragElement.getStyle().setMarginTop(offsetY, Unit.PX);		
+		dragElement.getStyle().setMarginTop(offsetY, Unit.PX);
 	}
 
 	private void createDragImage(Element element, boolean alignImageToEvent) {
 		Element cloneNode = (Element) element.cloneNode(true);
 		cloneNode.getStyle().setPosition(Position.ABSOLUTE);
 		cloneNode.addClassName("drag-image");
+		cloneNode.getStyle().setWidth(element.getOffsetWidth(), Unit.PX);
+		cloneNode.getStyle().setHeight(element.getOffsetHeight(), Unit.PX);
 		if (alignImageToEvent) {
 			int absoluteTop = element.getAbsoluteTop();
 			int absoluteLeft = element.getAbsoluteLeft();
@@ -376,10 +400,10 @@ public class DragAndDropConnector extends AbstractExtensionConnector {
 	public DragAndDropState getState() {
 		return (DragAndDropState) super.getState();
 	}
-	
+
 	@OnStateChange("disabled")
 	private void onDisabledOperationsChange() {
-		//TODO
+		// TODO
 	}
-	
+
 }

@@ -26,7 +26,7 @@ public class DragDemo extends VerticalLayout implements DemoView {
 		setWidth("800px");
 		setStyleName("drag-demo");
 
-		Label header = new Label("Basic Drag and Drop");
+		Label header = new Label(getViewCaption());
 		header.setStyleName(ValoTheme.LABEL_LARGE);
 		addComponent(header);
 

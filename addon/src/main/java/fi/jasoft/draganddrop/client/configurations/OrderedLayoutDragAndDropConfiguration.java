@@ -1,71 +1,109 @@
 package fi.jasoft.draganddrop.client.configurations;
 
 import com.google.gwt.dom.client.Element;
-import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.user.client.ui.Widget;
 import com.vaadin.client.Util;
 import com.vaadin.client.ui.orderedlayout.AbstractOrderedLayoutConnector;
 import com.vaadin.client.ui.orderedlayout.Slot;
 
+import fi.jasoft.draganddrop.client.DragAndDropEvent;
 import fi.jasoft.draganddrop.client.DragAndDropEvent.DragEnterEvent;
 import fi.jasoft.draganddrop.client.DragAndDropEvent.DragLeaveEvent;
+import fi.jasoft.draganddrop.client.DragAndDropEvent.DragOverEvent;
 import fi.jasoft.draganddrop.client.DragAndDropEvent.DropEvent;
 
-public class OrderedLayoutDragAndDropConfiguration<T extends AbstractOrderedLayoutConnector> extends
-		AbstractDragAndDropConfiguration<T> {
+public class OrderedLayoutDragAndDropConfiguration<T extends AbstractOrderedLayoutConnector>
+		extends AbstractDragAndDropConfiguration<T> {
 
 	protected Slot currentSlot;
-	
+
 	protected static final String ACTIVE_SLOT = "dd-active-slot";
-		
+
 	@Override
-	public void dragEnter(DragEnterEvent event) {							
+	public void dragEnter(DragEnterEvent event) {
 		cleanupCurrentSlot();
-		
-		currentSlot = getSlot(event.getEvent());
-		
-		if(currentSlot != null){
-			currentSlot.addStyleName(ACTIVE_SLOT);		
-		}	
-	}
-	
-	@Override
-	public void dragLeave(DragLeaveEvent event) {		
-		cleanupCurrentSlot();	
-	}
-	
-	@Override
-	public void drop(DropEvent event) {	
-		cleanupCurrentSlot();
-	}
-	
-	protected void cleanupCurrentSlot(){
-		if(currentSlot != null){
-			currentSlot.removeStyleName(ACTIVE_SLOT);			
+
+		currentSlot = getSlot(event);
+
+		if (currentSlot != null) {
+			currentSlot.addStyleName(ACTIVE_SLOT);
 		}
 	}
-	
-	protected Slot getSlot(NativeEvent event) {	
-		Element e = Util.getElementUnderMouse(event);
-		assert e != null: "Event target was null";		
-		Widget w = Util.findWidget(e, null);		
-		assert w != null: "Widget was not found";
-		
-		if(w != null) {
-			while(!(w instanceof Slot) && w != null) {
+
+	@Override
+	public void dragOver(DragOverEvent event) {
+		cleanupCurrentSlot();
+
+		currentSlot = getSlot(event);
+
+		if (currentSlot != null) {
+			currentSlot.addStyleName(ACTIVE_SLOT);
+		}
+	}
+
+	@Override
+	public void dragLeave(DragLeaveEvent event) {
+		cleanupCurrentSlot();
+	}
+
+	@Override
+	public void drop(DropEvent event) {
+		cleanupCurrentSlot();
+	}
+
+	protected void cleanupCurrentSlot() {
+		if (currentSlot != null) {
+			currentSlot.removeStyleName(ACTIVE_SLOT);
+		}
+	}
+
+	protected Slot getSlot(DragAndDropEvent event) {
+		Element e = Util.getElementUnderMouse(event.getEvent());
+
+		/*
+		 * If we are hitting between slot search around the cursor for the
+		 * closest slot
+		 */
+		int nextDirection = 0;
+		int width = 1;
+		int pageX = Util.getTouchOrMouseClientX(event.getEvent());
+		int pageY = Util.getTouchOrMouseClientY(event.getEvent());
+		while (event.getTargetConnector().getWidget().getElement() == e) {
+			if (nextDirection == 0) {
+				pageY -= width;
+				nextDirection++;
+			} else if (nextDirection == 1) {
+				pageX += width;
+				nextDirection++;
+			} else if (nextDirection == 2) {
+				pageY += width;
+				nextDirection++;
+			} else if (nextDirection == 3) {
+				pageX -= width;
+				width++;
+				nextDirection = 0;
+			}
+			e = Util.getElementFromPoint(pageX, pageY);
+		}
+
+		assert e != null : "Event target was null";
+		Widget w = Util.findWidget(e, null);
+		assert w != null : "Widget was not found";
+
+		if (w != null) {
+			while (!(w instanceof Slot) && w != null) {
 				w = w.getParent();
 			}
-		}				
-		
-		return (Slot) w;		
-	}
-	
-	protected int getSlotIndex(AbstractOrderedLayoutConnector connector, NativeEvent event) {	
-		Slot slot = getSlot(event);
-		if(slot == null) {
-			// Over layout
-			return -1;
 		}
+
+		assert w instanceof Slot;
+		return (Slot) w;
+	}
+
+	protected int getSlotIndex(AbstractOrderedLayoutConnector connector,
+			DragAndDropEvent event) {
+		Slot slot = getSlot(event);
+		assert slot != null;
 		return connector.getWidget().getWidgetIndex(slot);
 	}
 }
