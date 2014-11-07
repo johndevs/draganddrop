@@ -6,6 +6,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.vaadin.johan.Toolbox;
 import org.vaadin.johan.Toolbox.ORIENTATION;
@@ -13,6 +15,7 @@ import org.vaadin.johan.Toolbox.ORIENTATION;
 import com.google.gwt.thirdparty.guava.common.io.Files;
 import com.vaadin.annotations.Theme;
 import com.vaadin.navigator.Navigator;
+import com.vaadin.navigator.View;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Alignment;
@@ -35,89 +38,106 @@ import de.java2html.util.IllegalConfigurationException;
 import fi.jasoft.draganddrop.demos.DragDemo;
 
 @Theme("Demo")
-public class DemoUI extends UI{
-	
-	private Label codeLabel = new Label("No source available.", ContentMode.HTML);
-	
+public class DemoUI extends UI {
+
+	private List<DemoView> views = new ArrayList<>();
+	{
+		views.add(new DragDemo());
+	}
+
+	private Label codeLabel = new Label("No source available.",
+			ContentMode.HTML);
+
+	private Navigator navigator;
+
 	@Override
-	protected void init(VaadinRequest request){			
+	protected void init(VaadinRequest request) {
 
 		Panel showcase = new Panel();
 		showcase.setSizeUndefined();
-		
-		final Navigator navigator = new Navigator(this, showcase);
-		navigator.addView("drag", DragDemo.class);
-		
+
+		navigator = new Navigator(this, showcase);
+
+		for (DemoView view : views) {
+			navigator.addView(view.getViewPath(), view);
+		}
+
 		// default
-		navigator.navigateTo("drag");
-		codeLabel.setValue(getSourceCodeFromFile(DragDemo.class));
-		
+		openView(views.get(0));
+
 		MenuBar demos = new MenuBar();
 		demos.setStyleName(ValoTheme.MENUBAR_BORDERLESS);
-		demos.addItem("Basic drag & drop", new Command() {
-			
-			@Override
-			public void menuSelected(MenuItem selectedItem) {
-				navigator.navigateTo("drag");
-				codeLabel.setValue(getSourceCodeFromFile(DragDemo.class));
-			}
-		});
-		
+
+		for (final DemoView view : views) {
+			demos.addItem(view.getViewCaption(), new Command() {
+
+				@Override
+				public void menuSelected(MenuItem selectedItem) {
+					openView(view);
+				}
+			});
+		}
+
 		VerticalLayout root = new VerticalLayout(demos, showcase);
 		root.setSizeFull();
 		root.setExpandRatio(showcase, 1);
 		root.setComponentAlignment(showcase, Alignment.MIDDLE_CENTER);
 		setContent(root);
-		
+
 		HorizontalLayout sourceWrapperLayout = new HorizontalLayout();
 		Label caption = new Label("Source code for example");
 		caption.setStyleName("source-caption");
 		sourceWrapperLayout.addComponent(caption);
-		
+
 		Panel sourceWrapper = new Panel(codeLabel);
 		sourceWrapper.setStyleName(ValoTheme.PANEL_BORDERLESS);
-		sourceWrapper.setHeight(getPage().getBrowserWindowHeight()+"px");
+		sourceWrapper.setHeight(getPage().getBrowserWindowHeight() + "px");
 		sourceWrapperLayout.addComponent(sourceWrapper);
 		sourceWrapperLayout.setExpandRatio(sourceWrapper, 1);
-		
+
 		Toolbox sourceBox = new Toolbox();
 		sourceBox.setOrientation(ORIENTATION.RIGHT_CENTER);
 		sourceBox.setContent(sourceWrapperLayout);
 		sourceBox.setOverflowSize(30);
 		root.addComponent(sourceBox);
 	}
-	
+
+	private void openView(DemoView view) {
+		navigator.navigateTo(view.getViewPath());
+		codeLabel.setValue(getSourceCodeFromFile(view.getClass()));
+	}
+
 	private static String getSourceCodeFromFile(Class clazz) {
-		String file = clazz.getCanonicalName().replaceAll("\\.", "/")+".java";				
-		InputStream inputStream = 
-			      DemoUI.class.getClassLoader().getResourceAsStream(file);
-		if(inputStream == null) {
+		String file = clazz.getCanonicalName().replaceAll("\\.", "/") + ".java";
+		InputStream inputStream = DemoUI.class.getClassLoader()
+				.getResourceAsStream(file);
+		if (inputStream == null) {
 			return "";
 		}
-		
-		BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream ));
-		
+
+		BufferedReader reader = new BufferedReader(new InputStreamReader(
+				inputStream));
+
 		StringBuilder snippet = new StringBuilder();
 		String line;
 		boolean includeLine = false;
 		try {
-			while((line = reader.readLine()) != null){
-				if(line.contains("source-start")){
+			while ((line = reader.readLine()) != null) {
+				if (line.contains("source-start")) {
 					includeLine = true;
-				} else if(line.contains("source-end")){
+				} else if (line.contains("source-end")) {
 					includeLine = false;
-				} else if(includeLine){
+				} else if (includeLine) {
 					snippet.append(line);
 					snippet.append("\n");
 				}
 			}
-		} catch (IOException e) {			
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return getFormattedSourceCode(snippet.toString());	
+		return getFormattedSourceCode(snippet.toString());
 	}
-	
-	
+
 	private static String getFormattedSourceCode(String sourceCode) {
 		try {
 
