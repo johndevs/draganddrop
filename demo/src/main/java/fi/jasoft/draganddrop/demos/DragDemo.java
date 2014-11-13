@@ -1,3 +1,18 @@
+/*
+ * Copyright 2014 John Ahlroos
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package fi.jasoft.draganddrop.demos;
 
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
@@ -46,44 +61,44 @@ public class DragDemo extends VerticalLayout implements DemoView {
 		DragAndDrop.enable(image, DragAndDropOperation.DROP)
 
 		// Set custom drop handler
-		.onDrop(new DropHandler<Image>() {
+				.onDrop(new DropHandler<Image>() {
 
-			@Override
-			protected void onDrop(Component component) {
+					@Override
+					protected void onDrop(Component component) {
 
-				// Restor trash bin
-				getSource().setSource(
-						new ThemeResource("graphics/bin.jpg"));
+						// Restor trash bin
+						getSource().setSource(
+								new ThemeResource("graphics/bin.jpg"));
 
-				// Remove item
-				((ComponentContainer) component.getParent())
-						.removeComponent(component);
-			}
-		})
+						// Remove item
+						((ComponentContainer) component.getParent())
+								.removeComponent(component);
+					}
+				})
 
-		// Set custom over handler
-		.onOver(new DragOverHandler<Image>() {
+				// Set custom over handler
+				.onOver(new DragOverHandler<Image>() {
 
-			@Override
-			protected void onOver(Component component) {
+					@Override
+					protected void onOver(Component component) {
 
-				// Add color to trash bin
-				getSource().setSource(
-						new ThemeResource("graphics/bin2.jpg"));
-			}
-		})
+						// Add color to trash bin
+						getSource().setSource(
+								new ThemeResource("graphics/bin2.jpg"));
+					}
+				})
 
-		// Set custom out handler
-		.onOut(new DragOutHandler<Image>() {
+				// Set custom out handler
+				.onOut(new DragOutHandler<Image>() {
 
-			@Override
-			protected void onOut(Component component) {
+					@Override
+					protected void onOut(Component component) {
 
-				// Restore trash bin
-				getSource().setSource(
-						new ThemeResource("graphics/bin.jpg"));
-			}
-		});
+						// Restore trash bin
+						getSource().setSource(
+								new ThemeResource("graphics/bin.jpg"));
+					}
+				});
 
 		// source-end
 
