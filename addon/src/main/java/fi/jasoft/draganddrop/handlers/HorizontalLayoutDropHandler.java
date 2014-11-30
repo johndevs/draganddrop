@@ -26,50 +26,44 @@ import fi.jasoft.draganddrop.client.configurations.HorizontalLayoutDragAndDropCo
 @DragAndDropHandler(HorizontalLayout.class)
 public class HorizontalLayoutDropHandler extends DropHandler<HorizontalLayout> {
 
-	@SuppressWarnings("serial")
-	private HorizontalLayoutDropHandlerRpc rpc = new HorizontalLayoutDropHandlerRpc() {
+    @SuppressWarnings("serial")
+    private HorizontalLayoutDropHandlerRpc rpc = new HorizontalLayoutDropHandlerRpc() {
 
-		@Override
-		public void drop(Connector source, Connector dragged) {
-			if (source == getSource()) {
-				onDrop((Component) dragged);
-			}
-		}
+        @Override
+        public void drop(Connector source, Connector dragged) {
+            if (source == getSource()) {
+                onDrop((Component) dragged);
+            }
+        }
 
-		@Override
-		public void drop(Connector source, Connector dragged, int index,
-				Alignment horizontalAlign) {
-			if (source == getSource()) {
-				onDrop((Component) dragged, index, horizontalAlign);
-			}
-		}
-	};
+        @Override
+        public void drop(Connector source, Connector dragged, int index,
+                Alignment horizontalAlign) {
+            if (source == getSource()) {
+                onDrop((Component) dragged, index, horizontalAlign);
+            }
+        }
+    };
 
-	@Override
-	public HorizontalLayoutDropHandlerRpc getRpc() {
-		return rpc;
-	}
+    @Override
+    public HorizontalLayoutDropHandlerRpc getRpc() {
+        return rpc;
+    }
 
-	protected void onDrop(Component component, int index,
-			Alignment horizontalAlign) {
-		if (getSource().getComponent(index) == component) {
-			return;
-		}
+    protected void onDrop(Component component, int index,
+            Alignment horizontalAlign) {
+        if (index > -1) {
+            if (horizontalAlign != Alignment.LEFT) {
+                index++;
+            }
+            getSource().addComponent(component, index);
+        } else {
+            getSource().addComponent(component);
+        }
+    }
 
-		getSource().removeComponent(component);
-
-		if (index > -1) {
-			if (horizontalAlign != Alignment.LEFT) {
-				index++;
-			}
-			getSource().addComponent(component, index);
-		} else {
-			getSource().addComponent(component);
-		}
-	}
-
-	@Override
-	protected void onDrop(Component component) {
-		getSource().addComponent(component);
-	}
+    @Override
+    protected void onDrop(Component component) {
+        getSource().addComponent(component);
+    }
 }

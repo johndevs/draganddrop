@@ -9,5 +9,33 @@
 		padding:5px;
 		width: 200px;
 	}		
+	
+	& .shelves {
+		background-image: url("graphics/bookshelf.png");
+		padding-top: 50px;
+		
+		& .shelf {
+			margin-bottom:20px;
+			padding-left: 10px;
+			padding-right: 10px;
+			
+			 & .dd-active.place-holder {
+				background-color: rgba(200,200,200,0.5);
+				border: 2px dashed #222;
+			}
+		}		
+	}
+	
+	.book {
+		border: 1px solid #222;
+		background: green;
+		border-radius: 2px 2px 2px 2px;
+		padding: 5px;		
+		width:90px;
+		white-space:pre-wrap;
+		box-shadow: 4px -3px #222;
+		color: gold;	
+		font-weight:bold;
+		text-shadow: 1px 1px black;
+	}			
 }
-

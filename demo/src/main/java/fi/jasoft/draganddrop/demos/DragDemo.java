@@ -15,7 +15,6 @@
  */
 package fi.jasoft.draganddrop.demos;
 
-import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Component;
@@ -24,34 +23,34 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Image;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.themes.ValoTheme;
 
-import fi.jasoft.draganddrop.DemoView;
 import fi.jasoft.draganddrop.DragAndDrop;
 import fi.jasoft.draganddrop.handlers.DragOutHandler;
 import fi.jasoft.draganddrop.handlers.DragOverHandler;
 import fi.jasoft.draganddrop.handlers.DropHandler;
 import fi.jasoft.draganddrop.shared.DragAndDropOperation;
 
-public class DragDemo extends VerticalLayout implements DemoView {
+public class DragDemo extends AbstractDemo {
 
-	public DragDemo() {
-		setSpacing(true);
-		setMargin(true);
-		setWidth("800px");
-		setStyleName("drag-demo");
+	@Override
+	public String getViewPath() {
+		return "basic";
+	}
 
-		Label header = new Label(getViewCaption());
-		header.setStyleName(ValoTheme.LABEL_LARGE);
-		addComponent(header);
+	@Override
+	public String getViewCaption() {
+		return "Basic Drag and Drop";
+	}
 
-		Label description = new Label(
-				"Drag the list items over the dustbin, and drop them to have the bin eat the item");
-		addComponent(description);
+	@Override
+	protected String getDemoDescription() {
+		return "Drag the list items over the dustbin, and drop them to have the bin eat the item";
+	}
 
+	@Override
+	protected Component getDemoContent() {
 		HorizontalLayout hl = new HorizontalLayout();
 		hl.setSizeFull();
-		addComponent(hl);
 
 		// source-start
 		// Create image
@@ -61,44 +60,44 @@ public class DragDemo extends VerticalLayout implements DemoView {
 		DragAndDrop.enable(image, DragAndDropOperation.DROP)
 
 		// Set custom drop handler
-				.onDrop(new DropHandler<Image>() {
+		.onDrop(new DropHandler<Image>() {
 
-					@Override
-					protected void onDrop(Component component) {
+			@Override
+			protected void onDrop(Component component) {
 
-						// Restor trash bin
-						getSource().setSource(
-								new ThemeResource("graphics/bin.jpg"));
+				// Restor trash bin
+				getSource().setSource(
+						new ThemeResource("graphics/bin.jpg"));
 
-						// Remove item
-						((ComponentContainer) component.getParent())
-								.removeComponent(component);
-					}
-				})
+				// Remove item
+				((ComponentContainer) component.getParent())
+						.removeComponent(component);
+			}
+		})
 
-				// Set custom over handler
-				.onOver(new DragOverHandler<Image>() {
+		// Set custom over handler
+		.onOver(new DragOverHandler<Image>() {
 
-					@Override
-					protected void onOver(Component component) {
+			@Override
+			protected void onOver(Component component) {
 
-						// Add color to trash bin
-						getSource().setSource(
-								new ThemeResource("graphics/bin2.jpg"));
-					}
-				})
+				// Add color to trash bin
+				getSource().setSource(
+						new ThemeResource("graphics/bin2.jpg"));
+			}
+		})
 
-				// Set custom out handler
-				.onOut(new DragOutHandler<Image>() {
+		// Set custom out handler
+		.onOut(new DragOutHandler<Image>() {
 
-					@Override
-					protected void onOut(Component component) {
+			@Override
+			protected void onOut(Component component) {
 
-						// Restore trash bin
-						getSource().setSource(
-								new ThemeResource("graphics/bin.jpg"));
-					}
-				});
+				// Restore trash bin
+				getSource().setSource(
+						new ThemeResource("graphics/bin.jpg"));
+			}
+		});
 
 		// source-end
 
@@ -126,22 +125,7 @@ public class DragDemo extends VerticalLayout implements DemoView {
 			vl.addComponent(item);
 		}
 		// source-end
+
+		return hl;
 	}
-
-	@Override
-	public String getViewPath() {
-		return "basic";
-	}
-
-	@Override
-	public String getViewCaption() {
-		return "Basic Drag and Drop";
-	}
-
-	@Override
-	public void enter(ViewChangeEvent event) {
-		// TODO Auto-generated method stub
-
-	}
-
 }

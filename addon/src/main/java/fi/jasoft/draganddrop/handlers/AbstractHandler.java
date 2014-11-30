@@ -20,15 +20,15 @@ import com.vaadin.ui.Component;
 
 public abstract class AbstractHandler<T extends Component> {
 
-	private T source;
+    private T source;
 
-	public void setSource(T component) {
-		this.source = component;
-	}
+    public void setSource(T component) {
+        this.source = component;
+    }
 
-	public T getSource() {
-		return source;
-	}
+    public T getSource() {
+        return source;
+    }
 
-	public abstract ServerRpc getRpc();
+    public abstract ServerRpc getRpc();
 }

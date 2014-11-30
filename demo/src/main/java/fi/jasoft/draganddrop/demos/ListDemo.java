@@ -18,30 +18,31 @@ package fi.jasoft.draganddrop.demos;
 import java.util.Arrays;
 import java.util.List;
 
-import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
+import com.vaadin.ui.Component;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.themes.ValoTheme;
 
-import fi.jasoft.draganddrop.DemoView;
 import fi.jasoft.draganddrop.DragAndDrop;
 
-public class ListDemo extends VerticalLayout implements DemoView {
+public class ListDemo extends AbstractDemo {
 
-	public ListDemo() {
-		setSpacing(true);
-		setMargin(true);
-		setWidth("800px");
-		setStyleName("drag-demo");
+	@Override
+	public String getViewPath() {
+		return "list";
+	}
 
-		Label header = new Label(getViewCaption());
-		header.setStyleName(ValoTheme.LABEL_LARGE);
-		addComponent(header);
+	@Override
+	public String getViewCaption() {
+		return "List reordering";
+	}
 
-		Label description = new Label(
-				"Re-prioritize list by drag and dropping items to re-order");
-		addComponent(description);
+	@Override
+	protected String getDemoDescription() {
+		return "Re-prioritize list by drag and dropping items to re-order";
+	}
 
+	@Override
+	protected Component getDemoContent() {
 		// start-source
 		// Create shopping list
 		VerticalLayout list = new VerticalLayout();
@@ -60,22 +61,6 @@ public class ListDemo extends VerticalLayout implements DemoView {
 		DragAndDrop.enable(list);
 		// end-source
 
-		addComponent(list);
-	}
-
-	@Override
-	public void enter(ViewChangeEvent event) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public String getViewPath() {
-		return "list";
-	}
-
-	@Override
-	public String getViewCaption() {
-		return "List reordering";
+		return list;
 	}
 }

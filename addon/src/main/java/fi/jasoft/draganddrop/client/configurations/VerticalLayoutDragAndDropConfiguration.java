@@ -30,93 +30,84 @@ import fi.jasoft.draganddrop.handlers.VerticalLayoutDropHandler;
 
 @DragAndDropConfiguration(VerticalLayoutDropHandler.class)
 public class VerticalLayoutDragAndDropConfiguration extends
-		OrderedLayoutDragAndDropConfiguration<VerticalLayoutConnector> {
+        OrderedLayoutDragAndDropConfiguration<VerticalLayoutConnector> {
 
-	public interface VerticalLayoutDropHandlerRpc extends DropServerRpc {
-		public void drop(Connector source, Connector dragged, int index,
-				Alignment verticalAlign);
-	}
+    public interface VerticalLayoutDropHandlerRpc extends DropServerRpc {
+        public void drop(Connector source, Connector dragged, int index,
+                Alignment verticalAlign);
+    }
 
-	public enum Alignment {
-		TOP, MIDDLE, BOTTOM
-	}
+    public enum Alignment {
+        TOP, MIDDLE, BOTTOM
+    }
 
-	@Override
-	public void dragEnter(DragEnterEvent event) {
-		super.dragEnter(event);
-		if (currentSlot != null) {
-			Alignment verticalAlign = getVerticalAlign(event);
-			switch (verticalAlign) {
-			case TOP:
-				currentSlot.addStyleName(ACTIVE_SLOT + "-top");
-				break;
-			case MIDDLE:
-				currentSlot.addStyleName(ACTIVE_SLOT + "-middle");
-				break;
-			case BOTTOM:
-				currentSlot.addStyleName(ACTIVE_SLOT + "-bottom");
-				break;
-			}
-		}
-	}
+    @Override
+    public void dragEnter(DragEnterEvent event) {
+        super.dragEnter(event);
+        updateCurrentSlot(event);
+    }
 
-	@Override
-	public void dragOver(DragOverEvent event) {
-		super.dragOver(event);
-		if (currentSlot != null) {
-			Alignment verticalAlign = getVerticalAlign(event);
-			switch (verticalAlign) {
-			case TOP:
-				currentSlot.addStyleName(ACTIVE_SLOT + "-top");
-				break;
-			case MIDDLE:
-				currentSlot.addStyleName(ACTIVE_SLOT + "-middle");
-				break;
-			case BOTTOM:
-				currentSlot.addStyleName(ACTIVE_SLOT + "-bottom");
-				break;
-			}
-		}
-	}
+    @Override
+    public void dragOver(DragOverEvent event) {
+        super.dragOver(event);
+        updateCurrentSlot(event);
+    }
 
-	@Override
-	protected void cleanupCurrentSlot() {
-		super.cleanupCurrentSlot();
-		if (currentSlot != null) {
-			currentSlot.removeStyleName(ACTIVE_SLOT + "-top");
-			currentSlot.removeStyleName(ACTIVE_SLOT + "-middle");
-			currentSlot.removeStyleName(ACTIVE_SLOT + "-bottom");
-		}
-	}
+    protected void updateCurrentSlot(DragAndDropEvent event) {
+        if (currentSlot != null) {
+            Alignment verticalAlign = getVerticalAlign(event);
+            switch (verticalAlign) {
+            case TOP:
+                currentSlot.addStyleName(ACTIVE_SLOT + "-top");
+                break;
+            case MIDDLE:
+                currentSlot.addStyleName(ACTIVE_SLOT + "-middle");
+                break;
+            case BOTTOM:
+                currentSlot.addStyleName(ACTIVE_SLOT + "-bottom");
+                break;
+            }
+        }
+    }
 
-	@Override
-	public void drop(DropEvent event) {
-		super.drop(event);
-		VerticalLayoutConnector connector = (VerticalLayoutConnector) event
-				.getTargetConnector();
-		int slotIndex = getSlotIndex(connector, event);
-		Alignment verticalAlign = getVerticalAlign(event);
-		getRpcProxy(VerticalLayoutDropHandlerRpc.class).drop(connector,
-				event.getDraggedConnector(), slotIndex, verticalAlign);
-	}
+    @Override
+    protected void cleanupCurrentSlot() {
+        super.cleanupCurrentSlot();
+        if (currentSlot != null) {
+            currentSlot.removeStyleName(ACTIVE_SLOT + "-top");
+            currentSlot.removeStyleName(ACTIVE_SLOT + "-middle");
+            currentSlot.removeStyleName(ACTIVE_SLOT + "-bottom");
+        }
+    }
 
-	private Alignment getVerticalAlign(DragAndDropEvent event) {
-		Slot slot = getSlot(event);
-		if (slot == null) {
-			// Over layout
-			return Alignment.MIDDLE;
-		}
+    @Override
+    public void drop(DropEvent event) {
+        super.drop(event);
+        VerticalLayoutConnector connector = (VerticalLayoutConnector) event
+                .getTargetConnector();
+        int slotIndex = getSlotIndex(connector, event);
+        Alignment verticalAlign = getVerticalAlign(event);
+        getRpcProxy(VerticalLayoutDropHandlerRpc.class).drop(connector,
+                event.getDraggedConnector(), slotIndex, verticalAlign);
+    }
 
-		int absoluteTop = slot.getAbsoluteTop();
-		int fromTop = Util.getTouchOrMouseClientY(event.getEvent())
-				- absoluteTop;
-		float percentageFromTop = (fromTop / (float) slot.getOffsetHeight());
-		if (percentageFromTop < 0.25) {
-			return Alignment.TOP;
-		} else if (percentageFromTop > 1 - 0.25) {
-			return Alignment.BOTTOM;
-		} else {
-			return Alignment.MIDDLE;
-		}
-	}
+    private Alignment getVerticalAlign(DragAndDropEvent event) {
+        Slot slot = getSlot(event);
+        if (slot == null) {
+            // Over layout
+            return Alignment.MIDDLE;
+        }
+
+        int absoluteTop = slot.getAbsoluteTop();
+        int fromTop = Util.getTouchOrMouseClientY(event.getEvent())
+                - absoluteTop;
+        float percentageFromTop = (fromTop / (float) slot.getOffsetHeight());
+        if (percentageFromTop < 0.25) {
+            return Alignment.TOP;
+        } else if (percentageFromTop > 1 - 0.25) {
+            return Alignment.BOTTOM;
+        } else {
+            return Alignment.MIDDLE;
+        }
+    }
 }

@@ -29,4 +29,16 @@
 	.v-slot-source-caption {		
 		width:25px;
 	}
+
+    .v-label {
+       color:blue;
+    }
+}
+
+.dd-active-slot-left {
+	padding-left: 100px;
+}
+
+.dd-active-slot-right {
+	padding-right: 100px;
 }

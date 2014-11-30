@@ -47,6 +47,7 @@ import de.java2html.javasource.JavaSource;
 import de.java2html.javasource.JavaSourceParser;
 import de.java2html.options.JavaSourceConversionOptions;
 import de.java2html.util.IllegalConfigurationException;
+import fi.jasoft.draganddrop.demos.BookshelfDemo;
 import fi.jasoft.draganddrop.demos.DragDemo;
 import fi.jasoft.draganddrop.demos.ListDemo;
 
@@ -57,6 +58,7 @@ public class DemoUI extends UI {
 	{
 		views.add(new DragDemo());
 		views.add(new ListDemo());
+		views.add(new BookshelfDemo());
 	}
 
 	private Label codeLabel = new Label("No source available.",
